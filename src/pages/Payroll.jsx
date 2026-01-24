@@ -1,3 +1,5 @@
+import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
+import { Button, Popconfirm, Space, Table } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -12,6 +14,131 @@ const Payroll = () => {
         }
         FetchPayroll()
     }, [])
+
+    const payrollColumn = [
+        {
+            title: "S/N",
+            dataIndex: "id",
+            key: "id"
+        },
+         {
+            title: "Emp Name",
+            dataIndex: "employeeName",
+            key: "employeeName"
+        },
+        {
+            title: "Housing Allowance",
+            dataIndex: "housingAllowance",
+            key: "housingAllowance"
+        },
+        {
+            title: "Transport Allowance",
+            dataIndex: "transportAllowance",
+            key: "transportAllowance"
+        },
+        {
+            title: "NHIF",
+            dataIndex: "nhif",
+            key: "nhif"
+        },
+        {
+            title: "NSSF",
+            dataIndex: "nssf",
+            key: "nssf"
+        },
+        {
+            title: "PAYE",
+            dataIndex: "paye",
+            key: "paye"
+        },
+        {
+            title: "loanDeduction",
+            dataIndex: "loanDeduction",
+            key: "loanDeduction"
+        },
+        {
+            title: "basicSalary",
+            dataIndex: "basicSalary",
+            key: "basicSalary"
+        },
+        {
+            title: "totalDeduction",
+            dataIndex: "totalDeduction",
+            key: "totalDeduction"
+        },
+        {
+            title: "grossSalary",
+            dataIndex: "grossSalary",
+            key: "grossSalary"
+        },
+        {
+            title: "payrollData",
+            dataIndex: "payrollDate",
+            key: "payrollDate"
+        },
+        {
+            title: "Net Salary",
+            dataIndex: "netSalary",
+            key: "netSalary"
+        },
+        {
+            title: "Status",
+            dataIndex: "status",
+            key: "status"
+        },
+            {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          <Button
+            // icon={<EyeOutlined />}
+            icon={<EyeOutlined />}
+            onClick={() => handleView(record)}
+          />
+
+          <Button
+            type="primary"
+            // icon={<EditOutlined />}
+            icon={<EditOutlined />}
+            onClick={() => handleEdit(record)}
+          />
+
+          <Popconfirm
+            title="Are you sure to delete?"
+            onConfirm={() => handleDelete(record.id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            {/* <Button danger icon={<DeleteOutlined />} /> */}
+            <Button danger icon={<DeleteOutlined />} />
+          </Popconfirm>
+        </Space>
+      )
+    }
+
+    ]
+    // DELETE FUNCTION (using filter)
+// const handleDelete = async (id) => {
+//   const confirm = window.confirm("Are you sure you want to delete this product?");
+//   if (!confirm) return;
+
+//   try {
+//     // delete from backend
+//     await axios.delete(`http://localhost:8080/api/v1/storetrack/product/${id}`);
+// //OR
+//  await axios.delete("http://localhost:8080/api/v1/storetrack/product/" + id);
+
+//     // remove deleted row from state using filter
+//     setProduct(prevProducts =>
+//       prevProducts.filter(product => product.id !== id)
+//     );
+
+//   } catch (error) {
+//     console.error("Error deleting product", error);
+//   }
+// };
+
     return (
         <>
             <div className="pagetitle">
@@ -225,60 +352,16 @@ const Payroll = () => {
             </section >
 
 
-
             <section className="section">
                 <div className="row">
 
-                    <div className="col-lg-12">
+                    <div className="col-lg-12 ">
 
-                        <div className="card">
+                        <div className="card col-lg-12">
                             <div className="card-body">
-                                <h5 className="card-title">Table with hoverable rows</h5>
-                                {/* Table with hoverable rows */}
-                                <table className="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Emp Name</th>
-                                            <th scope="col">Housing Allowance</th>
-                                            <th scope="col">Transport Allowance </th>
-                                            <th scope="col">NHIF</th>
-                                            <th scope="col">NSSF</th>
-                                            <th scope="col">PAYE</th>
-                                            <th scope="col">basicSalary</th>
-                                            <th scope="col">totalDeduction</th>
-                                            <th scope="col">grossSalary</th>
-                                            <th scope="col">payrollDate</th>
-                                            <th scope="col">paymentDate</th>
-                                            <th scope="col">Net Salary</th>
-                                            <th scope="col">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {payslipData.map((pay,index)=>(
-                                        <tr>
-                                            <th scope="row">{index+1}</th>
-                                            <td>{pay.employeeName}</td>
-                                            <td>{pay.housingAllowance}</td>
-                                            <td>{pay.transportAllowance}</td>
-                                            <td>{pay.nhif}</td>
-                                            <td>{pay.nssf}</td>
-                                            <td>{pay.paye}</td>
-                                            <td>{pay.basicSalary}</td>
-                                            <td>{pay.totalDeduction}</td>
-                                            <td>{pay.grossSalary}</td>
-                                            <td>{pay.payrollDate}</td>
-                                            <td>{pay.paymentDate}</td>
-                                            <td>{pay.netSalary}</td>
-                                            <td>{pay.status}</td>
-                                        </tr>
+                                <h5 className="card-title">Payroll Table</h5>
 
-                                        ))}
-
-
-                                    </tbody>
-                                </table>
-                                {/* End Table with hoverable rows */}
+                                <Table columns={payrollColumn} dataSource={payslipData} scroll={{ x: 'max-content' }}/>
                             </div>
                         </div>
                     </div>

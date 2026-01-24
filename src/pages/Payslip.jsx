@@ -1,16 +1,16 @@
 import axios from "axios";
-// import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Payslip = () => {
-//     const [payslipData,setPayslipData] = useState([])
+    const [payslipData,setPayslipData] = useState([])
 
-//    useEffect(()=>{
-//     const FetchPayroll =async()=>{
-//         const res = await axios.get("http://localhost:8087/api/v1/payroll");
-//         setPayslipData(res.data)
-//     }
-//     FetchPayroll()
-//    },[])
+   useEffect(()=>{
+    const FetchPayroll =async()=>{
+        const res = await axios.get("http://localhost:8087/api/v1/payroll");
+        setPayslipData(res.data)
+    }
+    FetchPayroll()
+   },[])
 
     return (
         <div id="main">
