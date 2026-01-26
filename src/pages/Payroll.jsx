@@ -21,11 +21,10 @@ const Payroll = () => {
     const [selectedPayslip, setSelectedPayslip] = useState(null);
     const [openPayslip, setOpenPayslip] = useState(false);
 
-    const handleView = () => {
+    const handleView = (record) => {
         setSelectedPayslip(record);
-        setOpenPayslip(true)
-    }
-
+        setOpenPayslip(true);
+    };
 
 
 
@@ -121,14 +120,12 @@ const Payroll = () => {
             render: (_, record) => (
                 <Space size="middle">
                     <Button
-                        // icon={<EyeOutlined />}
                         icon={<EyeOutlined />}
                         onClick={() => handleView(record)}
                     />
 
                     <Button
                         type="primary"
-                        // icon={<EditOutlined />}
                         icon={<EditOutlined />}
                         onClick={() => handleEdit(record)}
                     />

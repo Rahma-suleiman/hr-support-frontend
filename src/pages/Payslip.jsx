@@ -138,7 +138,7 @@
 import React from "react";
 
 const Payslip = ({ payslip, onClose }) => {
-  if (!payslip) return null;
+  if (!payslip) return null; //Prevents crash. Shows content only when selectedPayslip exists
 
   return (
     <div className="card shadow p-4">
