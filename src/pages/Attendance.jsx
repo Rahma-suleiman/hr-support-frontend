@@ -31,6 +31,14 @@ function Attendance() {
   }, [])
 
 
+  const renderStatus=(status)=>{
+    if (status === "PRESENT") {
+      return <span style={{color:"green"}}>PRESENT</span>
+    }
+    if (status === "ABSENT") {
+      return <span style={{color:"red"}}>ABSENT</span>
+    }
+  }
   return (
     <>
       <div className="pagetitle">
@@ -189,7 +197,8 @@ function Attendance() {
                             <td>{attend.date}</td>
                             <td>{attend.checkInTime ? attend.checkInTime : "-"}</td>
                             <td>{attend.checkOutTime ? attend.checkOutTime : "-"}</td>
-                            <td className="fw-bold">{attend.status}</td>
+                            {/* <td className="fw-bold">{attend.status}</td> */}
+                            <td className="fw-bold">{renderStatus(attend.status)}</td>
                             <td>{attend.employeeId}</td>
                             {/* <td style={{textAlign:"center"}}>{attend.employeeId}</td> */}
                           </tr>

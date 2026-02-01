@@ -139,7 +139,7 @@ import React from "react";
 
 const Payslip = ({ payslip, onClose }) => {
   if (!payslip) return null; //Prevents crash. Shows content only when selectedPayslip exists
-
+console.log(payslip)
   return (
     <div className="card shadow p-4">
 
@@ -153,7 +153,7 @@ const Payslip = ({ payslip, onClose }) => {
       {/* Employee Details */}
       <h5>Employee Details</h5>
       <p><strong>Name:</strong> {payslip.employeeName}</p>
-      <p><strong>Employee ID:</strong> {payslip.employeeId}</p>
+      <p><strong>Employee ID:</strong> {payslip.employeeCode || "N/A"}</p>
       <p><strong>Department:</strong> {payslip.departmentName || "N/A"}</p>
       <p><strong>Position:</strong> {payslip.positionName || "N/A"}</p>
 

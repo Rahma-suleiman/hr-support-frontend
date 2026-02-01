@@ -87,7 +87,8 @@ const Dashboard = () => {
           <div className="col-lg-12 col-md-12">
             <div className="row">
               <div className="col-xxl-4 col-md-4 col-sm-6">
-                <div className="card info-card sales-card" style={{ background: "#ffe6f0" }}>
+                <div className="card info-card sales-card" style={{ background: "#f5aecaff" }}>
+                {/* <div className="card info-card sales-card" style={{ background: "#ffe6f0" }}> */}
 
                   <div className="filter">
                     <Link className="icon" to="#" data-bs-toggle="dropdown"><i className="bi bi-three-dots"></i></Link>
@@ -103,7 +104,7 @@ const Dashboard = () => {
                   </div>
 
                   <div className="card-body" >
-                    <h5 className="card-title">Department Accountancy</h5>
+                    <h5 className="card-title">Total Employee </h5>
                     {/* <h5 className="card-title">Sales <span>| Today</span></h5> */}
 
                     <div className="d-flex align-items-center">
@@ -126,7 +127,8 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="col-xxl-4 col-md-4 col-sm-6">
-                <div className="card info-card revenue-card" style={{ background: "#e6fffa" }}>
+                <div className="card info-card revenue-card" style={{ background: "#b6f7eaff" }}>
+                {/* <div className="card info-card revenue-card" style={{ background: "#e6fffa" }}> */}
 
                   <div className="filter">
                     <Link className="icon" to="#" data-bs-toggle="dropdown"><i className="bi bi-three-dots"></i></Link>
@@ -142,7 +144,7 @@ const Dashboard = () => {
                   </div>
 
                   <div className="card-body">
-                    <h5 className="card-title">Department IT</h5>
+                    <h5 className="card-title">Total Department</h5>
 
                     <div className="d-flex align-items-center">
                       <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -160,7 +162,8 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="col-xxl-4 col-md-4 col-sm-6">
-                <div className="card info-card revenue-card" style={{ background: "#fff3e6" }}>
+                <div className="card info-card revenue-card" style={{ background: "#f8cfa3ff" }}>
+                {/* <div className="card info-card revenue-card" style={{ background: "#fff3e6" }}> */}
 
                   <div className="filter">
                     <Link className="icon" to="#" data-bs-toggle="dropdown"><i className="bi bi-three-dots"></i></Link>
@@ -176,7 +179,7 @@ const Dashboard = () => {
                   </div>
 
                   <div className="card-body">
-                    <h5 className="card-title">Department HR</h5>
+                    <h5 className="card-title">Total Leave</h5>
 
                     <div className="d-flex align-items-center">
                       <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -196,195 +199,7 @@ const Dashboard = () => {
 
               <div className="col-12 col-xxl-12 col-xl-12">
 
-                <div className="card top-selling overflow-auto">
-
-                  <div className="card">
-                    <div className="card-body">
-                      <h5 className="card-title">Modal Sizes</h5>
-
-                      <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#largeModal">
-                        Add Employee
-                      </button>
-
-                      <div className="modal fade" id="largeModal" tabIndex="-1" aria-hidden="true" style={{ display: "none" }}>
-                        <div className="modal-dialog modal-lg">
-                          <div className="modal-content">
-                            <div className="modal-header">
-                              <h5 className="modal-title">Large Modal</h5>
-                              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-
-                            <div className="modal-body">
-                              <div className="card">
-                                <div className="card-body">
-                                  <h5 className="card-title">General Form Elements</h5>
-
-                                  <form>
-                                    <div className="row mb-3">
-                                      <label htmlFor="inputText" className="col-sm-2 col-form-label">FirstName</label>
-                                      <div className="col-sm-10">
-                                        <input type="text" className="form-control" />
-                                      </div>
-                                    </div>
-                                    <div className="row mb-3">
-                                      <label htmlFor="inputText" className="col-sm-2 col-form-label">LastName</label>
-                                      <div className="col-sm-10">
-                                        <input type="text" className="form-control" />
-                                      </div>
-                                    </div>
-                                    <div className="row mb-3">
-                                      <label htmlFor="inputEmail" className="col-sm-2 col-form-label">Email</label>
-                                      <div className="col-sm-10">
-                                        <input type="email" className="form-control" />
-                                      </div>
-                                    </div>
-                                    <div className="row mb-3">
-                                      <label htmlFor="inputNumber" className="col-sm-2 col-form-label">Phone Number</label>
-                                      <div className="col-sm-10">
-                                        <input type="number" className="form-control" />
-                                      </div>
-                                    </div>
-                                    <div className="row mb-3">
-                                      <label htmlFor="inputText" className="col-sm-2 col-form-label">Address</label>
-                                      <div className="col-sm-10">
-                                        <input type="text" className="form-control" />
-                                      </div>
-                                    </div>
-                                    <div className="row mb-3">
-                                      <label htmlFor="inputText" className="col-sm-2 col-form-label">Gender</label>
-                                      <div className="col-sm-10">
-                                        <input type="text" className="form-control" />
-                                      </div>
-                                    </div>
-                                    <div className="row mb-3">
-                                      <label htmlFor="inputDate" className="col-sm-2 col-form-label">DOB</label>
-                                      <div className="col-sm-10">
-                                        <input type="date" className="form-control" />
-                                      </div>
-                                    </div>
-                                    <div className="row mb-3">
-                                      <label htmlFor="inputDate" className="col-sm-2 col-form-label">Hired Date</label>
-                                      <div className="col-sm-10">
-                                        <input type="date" className="form-control" />
-                                      </div>
-                                    </div>
-                                    <div className="row mb-3">
-                                      <label htmlFor="inputText" className="col-sm-2 col-form-label">Position</label>
-                                      <div className="col-sm-10">
-                                        <input type="text" className="form-control" />
-                                      </div>
-                                    </div>
-                                    <div className="row mb-3">
-                                      <label htmlFor="inputNumber" className="col-sm-2 col-form-label">Salary</label>
-                                      <div className="col-sm-10">
-                                        <input type="number" className="form-control" />
-                                      </div>
-                                    </div>
-                                    <div className="row mb-3">
-                                      <label htmlFor="inputText" className="col-sm-2 col-form-label">Status</label>
-                                      <div className="col-sm-10">
-                                        <input type="text" className="form-control" />
-                                      </div>
-                                    </div>
-                                    <div className="row mb-3">
-                                      <label htmlFor="inputText" className="col-sm-2 col-form-label">Manager</label>
-                                      <div className="col-sm-10">
-                                        <input type="text" className="form-control" />
-                                      </div>
-                                    </div>
-
-                                    <div className="row mb-3">
-                                      <label className="col-sm-2 col-form-label">Submit Button</label>
-                                      <div className="col-sm-10">
-                                        <button type="submit" className="btn btn-primary">Submit Form</button>
-                                      </div>
-                                    </div>
-
-                                  </form>
-
-                                </div>
-                              </div>
-                            </div>
-
-                            <div className="modal-footer">
-                              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                              <button type="button" className="btn btn-primary">Save changes</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-
-
-
-                    </div>
-                  </div>
-
-
-                  {/* <div className="card-body pb-0">
-                    <h5 className="card-title">Employee Attendance</h5>
-                    <table className="table table-borderless">
-                      <thead>
-                        <tr>
-                          <th scope="col">S/N</th>
-                          <th scope="col">FirstName</th>
-                          <th scope="col">LasstName</th>
-                          <th scope="col">Email</th>
-                          <th scope="col">Phone</th>
-                          <th scope="col">Address</th>
-                          <th scope="col">Gender</th>
-                          <th scope="col">DOB</th>
-                          <th scope="col">Hired Date</th>
-                          <th scope="col">Position</th>
-                          <th scope="col">Salary</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">Manager</th>
-                          <th scope="col">Subordinates</th>
-                          <th scope="col">Department</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {empData.map(((emp, index) => (
-                          <tr key={emp.id}>
-                            <td scope="row">{index + 1}</td>
-                            <td scope="row">{emp.firstName}</td>
-                            <td>{emp.lastName}</td>
-                            <td>{emp.email}</td>
-                            <td>{emp.phone}</td>
-                            <td className="fw-bold">{emp.address}</td>
-                            <td>{emp.gender}</td>
-                            <td>{emp.dob}</td>
-                            <td>{emp.hireDate}</td>
-                            <td>{emp.position}</td>
-                            <td>{emp.salary}</td>
-                            <td>{emp.status}</td>
-                            <td>{getManagerName(emp.managerId)}</td>
-                            <td style={{ width: "200px" }}>
-                              <ul className="list-unstyled mb-0">
-                                {getSubordinateNames(emp.subordinateIds).length > 0 ? (
-                                  getSubordinateNames(emp.subordinateIds).map(sub => (
-
-                                    <li key={sub.id}>{sub.firstName} {sub.lastName}</li>
-                                  ))
-                                ) : (
-                                  <li>None</li>
-
-                                )}
-                              </ul>
-
-                            </td>
-                            <td>
-                              {getDeptName(emp.departmentId)}
-                            </td>
-                          </tr>
-                        )))
-                        }
-                      </tbody>
-                    </table>
-
-                  </div> */}
-
-                </div>
+            
               </div>
 
 

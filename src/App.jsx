@@ -1,15 +1,14 @@
 import './App.css'
 import { RouterProvider } from 'react-router-dom'
 import HrRoutes from './routes/HrRoutes'
-// import Payslip from './pages/Payslip'
-// import { PayslipExample } from './pages/PayslipExample'
+import { LeaveRequestExample } from './pages/LeaveRequestExample'
 
 function App() {
 
   return (
     <>
     <RouterProvider router={HrRoutes}/>
-    {/* <PayslipExample/> */}
+    {LeaveRequestExample}
     </>
   )
 }

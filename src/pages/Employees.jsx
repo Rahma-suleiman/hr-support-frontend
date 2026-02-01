@@ -1,3 +1,4 @@
+import { Button, Space, Table } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -5,7 +6,7 @@ import { Link } from 'react-router-dom';
 const Employees = () => {
 
   const [empData, setEmpData] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
+  // const [isLoading, setIsLoading] = useState(true)
 
   const [deptData, setDeptData] = useState([])
 
@@ -13,28 +14,78 @@ const Employees = () => {
   const [deptIt, setDeptIt] = useState(0)
   const [deptAccount, setDeptAccount] = useState(0)
 
-  // const [firstName, setFirstName] = useState('')
-  // const [lastName, setLastName] = useState('')
-  // const [email, setEmail] = useState('')
-  // const [address, setAddress] = useState('')
-  // const [dob, setDob] = useState('')
 
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+  const [address, setAddress] = useState('')
+  const [gender, setGender] = useState('')
+  const [dob, setDob] = useState('')
+  const [hiredDate, setHiredDate] = useState('')
+  const [position, setPosition] = useState('')
+  const [salary, setSalary] = useState('')
+  const [status, setStatus] = useState('')
+  const [departmentId, setDepartmentId] = useState('')
 
-  useEffect(() => {
-    const fetchDepartment = async () => {
-      try {
-        const res = await axios.get("http://localhost:8087/api/v2/hrsupport/department")
-        setDeptData(res.data)
-      } catch (error) {
-        console.error("Error fetching employees", error)
-      } finally {
+  const [empStatuses] = useState([
+    { label: "Active", value: "ACTIVE" },
+    { label: "On Leave", value: "ON_LEAVE" },
+    { label: "Resigned", value: "RESIGNED" },
+  ])
+  const formData = {
+    firstName,
+    lastName,
+    email,
+    phone,
+    address,
+    gender,
+    dob,
+    hireDate: hiredDate,   // correct mapping
+    position,
+    salary,
+    status,
+    departmentId: Number(departmentId) // important bcz <select> values come as strings
+  };
 
-        setIsLoading(false)
-      }
+  const SubmitFormData = async (e) => {
+    e.preventDefault()
 
+    const res = await axios.post("http://localhost:8087/api/v2/hrsupport/employee", formData)
+    setEmpData([...empData, res.data])
+
+    setFirstName("")
+    setLastName("")
+    setEmail("")
+    setPhone("")
+    setAddress("")
+    setGender("")
+    setDob("")
+    setHiredDate("")
+    setPosition("")
+    setSalary("")
+    setStatus("")
+    setDepartmentId("")
+  }
+
+  const fetchDepartment = async () => {
+    try {
+      const res = await axios.get("http://localhost:8087/api/v2/hrsupport/department")
+      setDeptData(res.data)
+    } catch (error) {
+      console.error("Error fetching employees", error)
     }
-    fetchDepartment();
-  }, []);
+
+  }
+
+  const fetchEmployee = async () => {
+    try {
+      const res = await axios.get("http://localhost:8087/api/v2/hrsupport/employee")
+      setEmpData(res.data)
+    } catch (error) {
+      console.error("Error fetching employees", error)
+    }
+  }
 
   useEffect(() => {
     if (empData.length === 0 || deptData.length === 0) return;
@@ -50,28 +101,123 @@ const Employees = () => {
   }, [empData, deptData]);
 
   useEffect(() => {
-    const fetchEmployee = async () => {
-      try {
-        const res = await axios.get("http://localhost:8087/api/v2/hrsupport/employee")
-        setEmpData(res.data)
-      } catch (error) {
-        console.error("Error fetching employees", error)
-      } finally {
 
-        setIsLoading(false)
-      }
-    }
     fetchEmployee()
+    fetchDepartment();
   }, [])
 
-  if (isLoading) {
-    return <p>Loading...</p>
-  }
+
   const getDeptName = (deptId) => {
     // Filter employees whose id is in the subordinateIds array
     const dept = deptData.find(dpt => dpt.id === deptId)
     return dept ? dept.name : "None"
   };
+  const empColumn = [
+    {
+      title: "S/N",
+      dataIndex: "id",
+      key: "id"
+    },
+    {
+      title: "Name",
+      key: "name",
+      width: 200,
+      render: (_, record) => (
+        record.firstName + " " + record.lastName
+      )
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      width: 220
+    },
+    {
+      title: "Phone",
+      dataIndex: "phone",
+      key: "phone"
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
+      width: 150
+    },
+    {
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender"
+    },
+    {
+      title: "Date of Birth",
+      dataIndex: "dob",
+      key: "dob"
+    },
+    {
+      title: "Hire Date",
+      dataIndex: "hireDate",
+      key: "hireDate"
+    },
+    {
+      title: "Position",
+      dataIndex: "position",
+      key: "position"
+    },
+    {
+      title: "Salary",
+      dataIndex: "salary",
+      key: "salary"
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (text) => (
+        <span
+          style={{
+            color:
+              text === "ACTIVE"
+                ? "green"
+                : text === "ON_LEAVE"
+                  ? "orange"
+                  : "red",
+            fontWeight: "bold"
+          }}
+        >
+          {text}
+        </span>
+      )
+    },
+    {
+      title: "Department",
+      dataIndex: "departmentId",
+      key: "departmentId",
+      width: 180,
+      // render: (_, record) => getDeptName(record.departmentId) //OR
+      render: (departmentId) => getDeptName(departmentId)
+
+    },
+    // {
+    //   title: "Action",
+    //   key: "action",
+    //   render: (_, record) => (
+    //     <Space>
+    //       <Button type="primary" onClick={() => showModal(record)}>
+    //         View Details
+    //       </Button>
+    //       <Button type="danger" onClick={() => showModal(record)}>
+    //         Delete Emp
+    //       </Button>
+    //       <Button type="primary" onClick={() => showModal(record)}>
+    //         Update
+    //       </Button>
+
+    //     </Space>
+    //   ),
+    // },
+
+  ]
+
   return (
     <>
       <div className="pagetitle">
@@ -91,7 +237,8 @@ const Employees = () => {
           <div className="col-lg-12 col-md-12">
             <div className="row">
               <div className="col-xxl-4 col-md-4 col-sm-6">
-                <div className="card info-card sales-card" style={{ background: "#ffe6f0" }}>
+                <div className="card info-card sales-card" style={{ background: "#e6a3f3ff" }}>
+                  {/* <div className="card info-card sales-card" style={{ background: "#f5aecaff" }}> */}
 
                   <div className="filter">
                     <Link className="icon" to="#" data-bs-toggle="dropdown"><i className="bi bi-three-dots"></i></Link>
@@ -127,8 +274,8 @@ const Employees = () => {
                 </div>
               </div>
               <div className="col-xxl-4 col-md-4 col-sm-6">
-                <div className="card info-card revenue-card" style={{ background: "#e6fffa" }}>
-
+                <div className="card info-card revenue-card" style={{ background: "#f3f17fff" }}>
+                  {/* <div className="card info-card revenue-card" style={{ background: "#b6f7eaff" }}> */}
                   <div className="filter">
                     <Link className="icon" to="#" data-bs-toggle="dropdown"><i className="bi bi-three-dots"></i></Link>
                     <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -162,7 +309,8 @@ const Employees = () => {
                 </div>
               </div>
               <div className="col-xxl-4 col-md-4 col-sm-6">
-                <div className="card info-card revenue-card" style={{ background: "#fff3e6" }}>
+                <div className="card info-card revenue-card" style={{ background: "#c4f18fff" }}>
+                  {/* <div className="card info-card revenue-card" style={{ background: "#f8cfa3ff" }}> */}
 
                   <div className="filter">
                     <Link className="icon" to="#" data-bs-toggle="dropdown"><i className="bi bi-three-dots"></i></Link>
@@ -196,6 +344,13 @@ const Employees = () => {
                 </div>
               </div>
 
+
+
+
+            </div>
+            <div className="row">
+
+
               <div className="col-12 col-xxl-12 col-xl-12">
 
                 <div className="card top-selling overflow-auto">
@@ -204,7 +359,7 @@ const Employees = () => {
                     <div className="card-header col-12 col-xxl-12 col-xl-12">
                       {/* <h5 className="card-title">Modal Sizes</h5> */}
 
-                      <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#largeModal">
+                      <button style={{ width: "155px", marginLeft: "22px", marginTop: "22px" }} type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#largeModal">
                         Add Employee
                       </button>
 
@@ -212,80 +367,130 @@ const Employees = () => {
                         <div className="modal-dialog modal-lg">
                           <div className="modal-content">
                             <div className="modal-header">
-                              <h5 className="modal-title">Large Modal</h5>
+                              <h5 className="modal-title">Register Employee</h5>
                               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
 
                             <div className="modal-body">
                               <div className="card">
-                                <div className="card-body">
-                                  <h5 className="card-title">General Form Elements</h5>
+                                <div className="card-body" >
+                                  {/* <h5 className="card-title">Register Employee</h5> */}
 
-                                  <form>
+                                  <form className='mt-4' onSubmit={SubmitFormData}>
                                     <div className="row mb-3">
                                       <label htmlFor="inputText" className="col-sm-2 col-form-label">FirstName</label>
                                       <div className="col-sm-10">
-                                        <input type="text" className="form-control" />
+                                        <input onChange={(e) => setFirstName(e.target.value)} value={firstName} type="text" className="form-control" />
                                       </div>
                                     </div>
                                     <div className="row mb-3">
                                       <label htmlFor="inputText" className="col-sm-2 col-form-label">LastName</label>
                                       <div className="col-sm-10">
-                                        <input type="text" className="form-control" />
+                                        <input onChange={(e) => setLastName(e.target.value)} value={lastName} type="text" className="form-control" />
                                       </div>
                                     </div>
                                     <div className="row mb-3">
                                       <label htmlFor="inputEmail" className="col-sm-2 col-form-label">Email</label>
                                       <div className="col-sm-10">
-                                        <input type="email" className="form-control" />
+                                        <input onChange={(e) => setEmail(e.target.value)} value={email} type="email" className="form-control" />
                                       </div>
                                     </div>
                                     <div className="row mb-3">
                                       <label htmlFor="inputNumber" className="col-sm-2 col-form-label">Phone Number</label>
                                       <div className="col-sm-10">
-                                        <input type="number" className="form-control" />
+                                        <input onChange={(e) => setPhone(e.target.value)} value={phone} type="number" className="form-control" />
                                       </div>
                                     </div>
                                     <div className="row mb-3">
                                       <label htmlFor="inputText" className="col-sm-2 col-form-label">Address</label>
                                       <div className="col-sm-10">
-                                        <input type="text" className="form-control" />
+                                        <input onChange={(e) => setAddress(e.target.value)} value={address} type="text" className="form-control" />
                                       </div>
                                     </div>
                                     <div className="row mb-3">
                                       <label htmlFor="inputText" className="col-sm-2 col-form-label">Gender</label>
                                       <div className="col-sm-10">
-                                        <input type="text" className="form-control" />
+                                        <input onChange={(e) => setGender(e.target.value)} value={gender} type="text" className="form-control" />
                                       </div>
                                     </div>
                                     <div className="row mb-3">
                                       <label htmlFor="inputDate" className="col-sm-2 col-form-label">DOB</label>
                                       <div className="col-sm-10">
-                                        <input type="date" className="form-control" />
+                                        <input onChange={(e) => setDob(e.target.value)} value={dob} type="date" className="form-control" />
                                       </div>
                                     </div>
                                     <div className="row mb-3">
                                       <label htmlFor="inputDate" className="col-sm-2 col-form-label">Hired Date</label>
                                       <div className="col-sm-10">
-                                        <input type="date" className="form-control" />
+                                        <input onChange={(e) => setHiredDate(e.target.value)} value={hiredDate} type="date" className="form-control" />
                                       </div>
                                     </div>
                                     <div className="row mb-3">
                                       <label htmlFor="inputText" className="col-sm-2 col-form-label">Position</label>
                                       <div className="col-sm-10">
-                                        <input type="text" className="form-control" />
+                                        <input onChange={(e) => setPosition(e.target.value)} value={position} type="text" className="form-control" />
                                       </div>
                                     </div>
                                     <div className="row mb-3">
                                       <label htmlFor="inputNumber" className="col-sm-2 col-form-label">Salary</label>
                                       <div className="col-sm-10">
-                                        <input type="number" className="form-control" />
+                                        <input onChange={(e) => setSalary(e.target.value)} value={salary} type="number" className="form-control" />
                                       </div>
                                     </div>
-                                    <div className="row mb-3">
+                                    {/* <div className="row mb-3">
                                       <label htmlFor="inputText" className="col-sm-2 col-form-label">Status</label>
                                       <div className="col-sm-10">
-                                        <input type="text" className="form-control" />
+                                      
+                                        <select
+                                          className="form-control"
+                                          onChange={(e) => setStatus(e.target.value)}
+                                          value={status}
+                                        >
+                                          <option>--Select Status</option>
+                                          {empStatuses.map((stat) => (
+                                            <option key={stat.value} value={stat.value}>
+                                              {stat.label}
+                                            </option>
+                                          ))}
+                                        </select>
+                                      </div>
+                                    </div> */}
+                                    <div className="row mb-3">
+                                      <label className="col-sm-2 col-form-label">Status</label>
+                                      <div className="col-sm-10">
+                                        <select
+                                          className="form-select"
+                                          value={status}
+                                          onChange={(e) => setStatus(e.target.value)}
+                                          required
+                                        >
+                                          <option value="">-- Select Status --</option>
+
+                                          {empStatuses.map((item) => (
+                                            <option key={item.value} value={item.value}>
+                                              {item.label}
+                                            </option>
+                                          ))}
+                                        </select>
+                                      </div>
+                                    </div>
+
+                                    <div className="row mb-3">
+                                      <label className="col-sm-2 col-form-label">Department</label>
+                                      <div className="col-sm-10">
+                                        <select
+                                          className="form-select"
+                                          value={departmentId}
+                                          onChange={(e) => setDepartmentId(e.target.value)}
+                                          required
+                                        >
+                                          <option value="">-- Select Department --</option>
+                                          {deptData.map((dept) => (
+                                            <option key={dept.id} value={dept.id}>
+                                              {dept.name}
+                                            </option>
+                                          ))}
+                                        </select>
                                       </div>
                                     </div>
 
@@ -314,70 +519,17 @@ const Employees = () => {
 
 
                     </div>
-                  </div>
 
 
-                  <div className="card-body pb-0">
-                    <h5 className="card-title">Employee </h5>
-                    <table className="table table-borderless">
-                      <thead>
-                        <tr>
-                          <th scope="col">S/N</th>
-                          <th scope="col">FirstName</th>
-                          <th scope="col">LasstName</th>
-                          <th scope="col">Email</th>
-                          <th scope="col">Phone</th>
-                          <th scope="col">Address</th>
-                          <th scope="col">Gender</th>
-                          <th scope="col">DOB</th>
-                          <th scope="col">Hired Date</th>
-                          <th scope="col">Position</th>
-                          <th scope="col">Salary</th>
-                          <th scope="col">Status</th>
-                          {/* <th scope="col">Manager</th>
-                          <th scope="col">Subordinates</th> */}
-                          <th scope="col">Department</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {empData.map(((emp, index) => (
-                          <tr key={emp.id}>
-                            <td scope="row">{index + 1}</td>
-                            <td scope="row">{emp.firstName}</td>
-                            <td>{emp.lastName}</td>
-                            <td>{emp.email}</td>
-                            <td>{emp.phone}</td>
-                            <td>{emp.address}</td>
-                            <td>{emp.gender}</td>
-                            <td>{emp.dob}</td>
-                            <td>{emp.hireDate}</td>
-                            <td>{emp.position}</td>
-                            <td>{emp.salary}</td>
-                            <td className="fw-bold">{emp.status}</td>
-                            {/* <td>{getManagerName(emp.managerId)}</td>
-                            <td style={{width:"200px"}}>
-                              <ul className="list-unstyled mb-0">
-                                {getSubordinateNames(emp.subordinateIds).length > 0 ? (
-                                  getSubordinateNames(emp.subordinateIds).map(sub =>(
+                    <div className="card-body pb-0">
+                      <h5 className="card-title">Employee </h5>
 
-                                    <li key={sub.id}>{sub.firstName} {sub.lastName}</li>
-                                  ))
-                                ): (
-                                  <li>None</li>
-
-                                )}
-                              </ul>
-
-                            </td> */}
-                            <td>
-                              {getDeptName(emp.departmentId)}
-                            </td>
-                          </tr>
-                        )))
-                        }
-                      </tbody>
-                    </table>
-
+                      <Table
+                        columns={empColumn}
+                        dataSource={empData}
+                        scroll={{ x: 'max-content' }}
+                      />
+                    </div>
                   </div>
 
                 </div>
@@ -387,95 +539,7 @@ const Employees = () => {
             </div>
 
           </div>
-          {/* <div className="row">
 
-            <div className="col-lg-12 col-md-12">
-              <div className="row">
-
-                <div className="col-lg-12">
-
-                  <div className="card">
-                    <div className="card-body">
-                      <h5 className="card-title">Datatables</h5>
-                      
-                      <div className="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns">
-                        <div className="datatable-top">
-                          <div className="datatable-dropdown">
-                            <label>
-                              <select className="datatable-selector" name="per-page">
-                                <option value="5">5</option>
-                                <option value="10" selected="">10</option>
-                                <option value="15">15</option>
-                                <option value="-1">All</option>
-                              </select> entries per page
-                            </label>
-                          </div>
-                          <div className="datatable-search">
-                            <input className="datatable-input" placeholder="Search..." type="search" name="search" title="Search within table" />
-                          </div>
-                        </div>
-                        <div className="datatable-container">
-                          <table className="table datatable datatable-table">
-                            <thead>
-                              <tr>
-                                <th data-sortable="true" style={{width: "20.825852782764812%"}}>
-                                  <button className="datatable-sorter"><b>N</b>ame</button>
-                                </th>
-                                <th data-sortable="true" style={{width: "11.131059245960502%"}}>
-                                  <button className="datatable-sorter">Ext.</button>
-                                </th>
-                                <th data-sortable="true" style={{width: "26.750448833034113%"}}>
-                                  <button className="datatable-sorter">City</button>
-                                </th>
-                                <th data-format="YYYY/DD/MM" data-sortable="true" data-type="date" style={{width: "18.850987432675044%"}}>
-                                  <button className="datatable-sorter">Start Date</button>
-                                </th>
-                                <th data-sortable="true" className="red" style={{width: "22.44165170556553%"}}>
-                                  <button className="datatable-sorter">Completion</button>
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr data-index="0">
-                                <td>Unity Pugh</td>
-                                <td>9958</td>
-                                <td>Curicó</td>
-                                <td>2005/02/11</td>
-                                <td className="green">37%</td>
-                              </tr>
-                              <tr data-index="1">
-                                <td>Theodore Duran</td>
-                                <td>8971</td>
-                                <td>Dhanbad</td>
-                                <td>1999/04/07</td>
-                                <td className="green">97%</td>
-                              </tr>
-                              <tr data-index="2">
-                                <td>Kylie Bishop</td>
-                                <td>3147</td>
-                                <td>Norman</td>
-                                <td>2005/09/08</td>
-                                <td className="green">63%</td>
-                              </tr>
-
-                            </tbody>
-                          </table>
-                        </div>
-                        <div className="datatable-bottom">
-                          <div className="datatable-info">Showing 1 to 10 of 100 entries</div>
-                          <nav className="datatable-pagination"><ul className="datatable-pagination-list"><li className="datatable-pagination-list-item datatable-hidden datatable-disabled"><button data-page="1" className="datatable-pagination-list-item-link" aria-label="Page 1">‹</button></li><li className="datatable-pagination-list-item datatable-active"><button data-page="1" className="datatable-pagination-list-item-link" aria-label="Page 1">1</button></li><li className="datatable-pagination-list-item"><button data-page="2" className="datatable-pagination-list-item-link" aria-label="Page 2">2</button></li><li className="datatable-pagination-list-item"><button data-page="3" className="datatable-pagination-list-item-link" aria-label="Page 3">3</button></li><li className="datatable-pagination-list-item"><button data-page="4" className="datatable-pagination-list-item-link" aria-label="Page 4">4</button></li><li className="datatable-pagination-list-item"><button data-page="5" className="datatable-pagination-list-item-link" aria-label="Page 5">5</button></li><li className="datatable-pagination-list-item"><button data-page="6" className="datatable-pagination-list-item-link" aria-label="Page 6">6</button></li><li className="datatable-pagination-list-item"><button data-page="7" className="datatable-pagination-list-item-link" aria-label="Page 7">7</button></li><li className="datatable-pagination-list-item datatable-ellipsis datatable-disabled"><button className="datatable-pagination-list-item-link">…</button></li><li className="datatable-pagination-list-item"><button data-page="10" className="datatable-pagination-list-item-link" aria-label="Page 10">10</button></li><li className="datatable-pagination-list-item"><button data-page="2" className="datatable-pagination-list-item-link" aria-label="Page 2">›</button></li></ul></nav>
-                        </div></div>
-
-                    </div>
-                  </div>
-
-                </div>
-
-
-              </div>
-
-            </div>
-          </div> */}
         </div>
       </section >
     </>

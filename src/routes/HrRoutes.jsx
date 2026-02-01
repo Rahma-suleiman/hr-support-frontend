@@ -5,7 +5,7 @@ import HomeLayout from '../pages/HomeLayout';
 import Dashboard from '../pages/Dashboard';
 import Attendance from '../pages/Attendance';
 import Employees from '../pages/Employees';
-import { LeaveRequest } from '../pages/LeaveRequest';
+import LeaveRequest from '../pages/LeaveRequest';
 import Payroll from '../pages/Payroll';
 
 const HrRoutes = createBrowserRouter(
