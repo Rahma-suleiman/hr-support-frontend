@@ -1,4 +1,5 @@
-import { Button, Space, Table } from 'antd';
+import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import { Button, Popconfirm, Space, Table } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -28,6 +29,9 @@ const Employees = () => {
   const [status, setStatus] = useState('')
   const [departmentId, setDepartmentId] = useState('')
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingEmpId, setEditingEmpId] = useState(null);
+
   const [empStatuses] = useState([
     { label: "Active", value: "ACTIVE" },
     { label: "On Leave", value: "ON_LEAVE" },
@@ -48,24 +52,72 @@ const Employees = () => {
     departmentId: Number(departmentId) // important bcz <select> values come as strings
   };
 
+
+  const handleEdit = (record) => {
+    setIsEditing(true);
+    setEditingEmpId(record.id);
+
+    setFirstName(record.firstName);
+    setLastName(record.lastName);
+    setEmail(record.email);
+    setPhone(record.phone);
+    setAddress(record.address);
+    setGender(record.gender);
+    setDob(record.dob);
+    setHiredDate(record.hireDate);
+    setPosition(record.position);
+    setSalary(record.salary);
+    setStatus(record.status);
+    setDepartmentId(record.departmentId);
+
+    // open modal
+    const modal = new window.bootstrap.Modal(
+      document.getElementById("largeModal")
+    );
+    modal.show();
+  };
+
   const SubmitFormData = async (e) => {
     e.preventDefault()
 
-    const res = await axios.post("http://localhost:8087/api/v2/hrsupport/employee", formData)
-    setEmpData([...empData, res.data])
+    try {
+      if (isEditing) {
+        //UPDATE
+        const res = await axios.put(`http://localhost:8087/api/v2/hrsupport/employee/${editingEmpId}`, formData)
+        // It loops through the employees array and replaces only the employee 
+        // being edited with the updated data from the server, 
+        // while keeping all other employees unchanged.
+        setEmpData(
+          empData.map(emp =>
+            emp.id === editingEmpId ? res.data : emp
+          )
+        )
 
-    setFirstName("")
-    setLastName("")
-    setEmail("")
-    setPhone("")
-    setAddress("")
-    setGender("")
-    setDob("")
-    setHiredDate("")
-    setPosition("")
-    setSalary("")
-    setStatus("")
-    setDepartmentId("")
+      } else {
+        //CREATE
+        const res = await axios.post("http://localhost:8087/api/v2/hrsupport/employee", formData)
+        setEmpData([...empData, res.data])
+      }
+      setIsEditing(false)
+      setEditingEmpId(null)
+
+      setFirstName("")
+      setLastName("")
+      setEmail("")
+      setPhone("")
+      setAddress("")
+      setGender("")
+      setDob("")
+      setHiredDate("")
+      setPosition("")
+      setSalary("")
+      setStatus("")
+      setDepartmentId("")
+    } catch (error) {
+      console.log("Error saving employee", error)
+    }
+
+
   }
 
   const fetchDepartment = async () => {
@@ -116,12 +168,14 @@ const Employees = () => {
     {
       title: "S/N",
       dataIndex: "id",
+      fixed: "left",
       key: "id"
     },
     {
       title: "Name",
       key: "name",
       width: 200,
+      fixed: "left",
       render: (_, record) => (
         record.firstName + " " + record.lastName
       )
@@ -197,24 +251,34 @@ const Employees = () => {
       render: (departmentId) => getDeptName(departmentId)
 
     },
-    // {
-    //   title: "Action",
-    //   key: "action",
-    //   render: (_, record) => (
-    //     <Space>
-    //       <Button type="primary" onClick={() => showModal(record)}>
-    //         View Details
-    //       </Button>
-    //       <Button type="danger" onClick={() => showModal(record)}>
-    //         Delete Emp
-    //       </Button>
-    //       <Button type="primary" onClick={() => showModal(record)}>
-    //         Update
-    //       </Button>
-
-    //     </Space>
-    //   ),
-    // },
+    {
+      title: "Action",
+      key: "action",
+      fixed: "right",
+      width: 120,
+      render: (_, record) => (
+        <Space>
+          <Button
+            icon={<EyeOutlined />}
+            // onClick={() => handleView(record)}
+          />
+          <Button
+            type="primary"
+            size="small"
+            onClick={() => handleEdit(record)}
+          >
+            Edit
+          </Button>
+          <Popconfirm
+            type="danger"
+            size="small"
+            onClick={() => handleDelete(record)}
+          >
+            <Button danger icon={<DeleteOutlined />} />
+          </Popconfirm>
+        </Space>
+      )
+    }
 
   ]
 
@@ -367,7 +431,9 @@ const Employees = () => {
                         <div className="modal-dialog modal-lg">
                           <div className="modal-content">
                             <div className="modal-header">
-                              <h5 className="modal-title">Register Employee</h5>
+                              <h5 className="modal-title">
+                                {isEditing ? "Update Employee" : "Register Employee"}
+                              </h5>
                               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
 
@@ -398,7 +464,7 @@ const Employees = () => {
                                     <div className="row mb-3">
                                       <label htmlFor="inputNumber" className="col-sm-2 col-form-label">Phone Number</label>
                                       <div className="col-sm-10">
-                                        <input onChange={(e) => setPhone(e.target.value)} value={phone} type="number" className="form-control" />
+                                        <input onChange={(e) => setPhone(e.target.value)} value={phone} type="text" className="form-control" />
                                       </div>
                                     </div>
                                     <div className="row mb-3">
@@ -497,7 +563,9 @@ const Employees = () => {
                                     <div className="row mb-3">
                                       <label className="col-sm-2 col-form-label">Submit Button</label>
                                       <div className="col-sm-10">
-                                        <button type="submit" className="btn btn-primary">Submit Form</button>
+                                        <button type="submit" className="btn btn-primary">
+                                          {isEditing ? "Update Employee" : "Submit Form"}
+                                        </button>
                                       </div>
                                     </div>
 

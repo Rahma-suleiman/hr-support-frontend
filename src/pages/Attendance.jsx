@@ -42,11 +42,11 @@ function Attendance() {
   return (
     <>
       <div className="pagetitle">
-        <h1>Dashboard</h1>
+        <h1>Attendance</h1>
         <nav>
           <ol className="breadcrumb">
-            <li className="breadcrumb-item"><Link to="index.html">Home</Link></li>
-            <li className="breadcrumb-item active">Dashboard</li>
+            <li className="breadcrumb-item"><Link to="index.html">Dashboard</Link></li>
+            <li className="breadcrumb-item active">Attendance</li>
           </ol>
         </nav>
       </div>

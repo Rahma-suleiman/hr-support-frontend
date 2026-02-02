@@ -22,7 +22,26 @@ const LeaveRequest = () => {
   //   {label:"Study", value:"STUDY"},
   //   {label:"Compassionate", value:"COMPASSIONATE"} //bereavement (loss of a close loved one, e.g., spouse, parent, child)
   // ])
+const handleAction = async (leaveId, status) => {
+  try {
+    await axios.put(
+      `http://localhost:8087/api/v2/hrsupport/leave/${leaveId}/status`,
+      status,
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
 
+    // Refresh table after update
+    getLeaveRequests();
+
+  } catch (error) {
+    console.error("Failed to update leave status", error);
+    alert("Failed to update leave status");
+  }
+};
   const tableColumn = [
     {
       title: "S/N",
@@ -101,11 +120,11 @@ const LeaveRequest = () => {
   return (
     <>
       <div className="pagetitle">
-        <h1>Dashboard</h1>
+        <h1>Leave Request</h1>
         <nav>
           <ol className="breadcrumb">
-            <li className="breadcrumb-item"><Link to="index.html">Home</Link></li>
-            <li className="breadcrumb-item active">Dashboard</li>
+            <li className="breadcrumb-item"><Link to="/">Home</Link></li>
+            <li className="breadcrumb-item active">Payroll</li>
           </ol>
         </nav>
       </div>
