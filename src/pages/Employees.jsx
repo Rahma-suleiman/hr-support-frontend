@@ -1,5 +1,5 @@
 import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Space, Table } from 'antd';
+import { Button, Modal, Popconfirm, Space, Table } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -113,6 +113,11 @@ const Employees = () => {
       setSalary("")
       setStatus("")
       setDepartmentId("")
+
+      // ✅ CLOSE MODAL 
+      const modalEl = document.getElementById("largeModal");
+      const modalInstance = window.bootstrap.Modal.getInstance(modalEl);
+      modalInstance.hide();
     } catch (error) {
       console.log("Error saving employee", error)
     }
@@ -164,6 +169,13 @@ const Employees = () => {
     const dept = deptData.find(dpt => dpt.id === deptId)
     return dept ? dept.name : "None"
   };
+
+  const [selectedEmp, setSelectedEmp] = useState(null);
+  const [openEmpDetails, setOpenEmpDetails] = useState(false);
+  const handleView = (record) => {
+    setSelectedEmp(record);
+    setOpenEmpDetails(true)
+  }
   const empColumn = [
     {
       title: "S/N",
@@ -260,7 +272,7 @@ const Employees = () => {
         <Space>
           <Button
             icon={<EyeOutlined />}
-            // onClick={() => handleView(record)}
+            onClick={() => handleView(record)}
           />
           <Button
             type="primary"
@@ -503,24 +515,6 @@ const Employees = () => {
                                         <input onChange={(e) => setSalary(e.target.value)} value={salary} type="number" className="form-control" />
                                       </div>
                                     </div>
-                                    {/* <div className="row mb-3">
-                                      <label htmlFor="inputText" className="col-sm-2 col-form-label">Status</label>
-                                      <div className="col-sm-10">
-                                      
-                                        <select
-                                          className="form-control"
-                                          onChange={(e) => setStatus(e.target.value)}
-                                          value={status}
-                                        >
-                                          <option>--Select Status</option>
-                                          {empStatuses.map((stat) => (
-                                            <option key={stat.value} value={stat.value}>
-                                              {stat.label}
-                                            </option>
-                                          ))}
-                                        </select>
-                                      </div>
-                                    </div> */}
                                     <div className="row mb-3">
                                       <label className="col-sm-2 col-form-label">Status</label>
                                       <div className="col-sm-10">
@@ -560,10 +554,10 @@ const Employees = () => {
                                       </div>
                                     </div>
 
-                                    <div className="row mb-3">
-                                      <label className="col-sm-2 col-form-label">Submit Button</label>
+                                    <div className="row ms-3">
+                                      {/* <label className="col-sm-2 col-form-label">Submit Button</label> */}
                                       <div className="col-sm-10">
-                                        <button type="submit" className="btn btn-primary">
+                                        <button type="submit" className="btn btn-primary" style={{marginLeft:"128px"}}>
                                           {isEditing ? "Update Employee" : "Submit Form"}
                                         </button>
                                       </div>
@@ -575,10 +569,10 @@ const Employees = () => {
                               </div>
                             </div>
 
-                            <div className="modal-footer">
+                            {/* <div className="modal-footer">
                               <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                               <button type="button" className="btn btn-primary">Save changes</button>
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       </div>
@@ -597,6 +591,48 @@ const Employees = () => {
                         dataSource={empData}
                         scroll={{ x: 'max-content' }}
                       />
+                      <Modal
+                        title="Employee Details"
+                        open={openEmpDetails}
+                        onCancel={() => setOpenEmpDetails(false)}
+                        footer={[
+                          <Button key="close" onClick={() => setOpenEmpDetails(false)}>
+                            Close
+                          </Button>
+                        ]}
+                      >
+                        {selectedEmp && (
+                          <div>
+                            <p><strong>Name:</strong> {selectedEmp.firstName} {selectedEmp.lastName}</p>
+                            <p><strong>Email:</strong> {selectedEmp.email}</p>
+                            <p><strong>Phone:</strong> {selectedEmp.phone}</p>
+                            <p><strong>Gender:</strong> {selectedEmp.gender}</p>
+                            <p><strong>Date of Birth:</strong> {selectedEmp.dob}</p>
+                            <p><strong>Hire Date:</strong> {selectedEmp.hireDate}</p>
+                            <p><strong>Position:</strong> {selectedEmp.position}</p>
+                            <p><strong>Salary:</strong> {selectedEmp.salary}</p>
+                            <p>
+                              <strong>Status:</strong>{" "}
+                              <span
+                                style={{
+                                  color:
+                                    selectedEmp.status === "ACTIVE"
+                                      ? "green"
+                                      : selectedEmp.status === "ON_LEAVE"
+                                        ? "orange"
+                                        : "red",
+                                  fontWeight: "bold"
+                                }}
+                              >
+                                {selectedEmp.status}
+                              </span>
+                            </p>
+                            <p><strong>Department:</strong> {getDeptName(selectedEmp.departmentId)}</p>
+                          </div>
+                        )}
+                      </Modal>
+
+
                     </div>
                   </div>
 
