@@ -46,13 +46,15 @@ const Payroll = () => {
     const payrollColumn = [
         {
             title: "S/N",
-            dataIndex: "id",
-            key: "id"
+            key: "sn",
+            fixed: "left",
+            render: (_, __, index) => index + 1
         },
         {
             title: "Emp Name",
             dataIndex: "employeeName",
-            key: "employeeName"
+            key: "employeeName",
+            fixed: "left"
         },
         {
             title: "Housing Allowance",
@@ -117,6 +119,7 @@ const Payroll = () => {
         {
             title: "Action",
             key: "action",
+            fixed: "right",
             render: (_, record) => (
                 <Space size="middle">
                     <Button
@@ -143,26 +146,8 @@ const Payroll = () => {
         }
 
     ]
-    // DELETE FUNCTION (using filter)
-    // const handleDelete = async (id) => {
-    //   const confirm = window.confirm("Are you sure you want to delete this product?");
-    //   if (!confirm) return;
 
-    //   try {
-    //     // delete from backend
-    //     await axios.delete(`http://localhost:8080/api/v1/storetrack/product/${id}`);
-    // //OR
-    //  await axios.delete("http://localhost:8080/api/v1/storetrack/product/" + id);
-
-    //     // remove deleted row from state using filter
-    //     setProduct(prevProducts =>
-    //       prevProducts.filter(product => product.id !== id)
-    //     );
-
-    //   } catch (error) {
-    //     console.error("Error deleting product", error);
-    //   }
-    // };
+    // const 
 
     return (
         <>
@@ -175,7 +160,7 @@ const Payroll = () => {
                     </ol>
                 </nav>
             </div>
-        
+
 
 
             <section className="section">
@@ -187,7 +172,11 @@ const Payroll = () => {
                             <div className="card-body">
                                 <h5 className="card-title">Payroll Table</h5>
 
-                                <Table columns={payrollColumn} dataSource={payslipData} scroll={{ x: 'max-content' }} />
+                                <Table
+                                    columns={payrollColumn}
+                                    dataSource={payslipData}
+                                    loading={!payslipData.length}
+                                    scroll={{ x: 'max-content' }} />
                                 <Modal
                                     open={openPayslip}
                                     footer={null}

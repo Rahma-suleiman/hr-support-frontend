@@ -1,10 +1,11 @@
 // import { Link } from 'react-router-dom'
+import { Table } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 
 function Attendance() {
- const [countPresent, setCountPresent] = useState(0)
+  const [countPresent, setCountPresent] = useState(0)
   const [countAbsent, setCountAbsent] = useState(0)
   const [total, setTotal] = useState(0)
 
@@ -31,14 +32,66 @@ function Attendance() {
   }, [])
 
 
-  const renderStatus=(status)=>{
+  const renderStatus = (status) => {
     if (status === "PRESENT") {
-      return <span style={{color:"green"}}>PRESENT</span>
+      return <span style={{ color: "green" }}>PRESENT</span>
     }
     if (status === "ABSENT") {
-      return <span style={{color:"red"}}>ABSENT</span>
+      return <span style={{ color: "red" }}>ABSENT</span>
     }
   }
+  const attendColumn = [
+    {
+      title: "S/N",
+      key: "sn",
+      fixed: "left",
+      render: (_, __, index) => index + 1
+    },
+    // {
+    //   title: "Emp Name",
+    //   dataIndex: "employeeName",
+    //   key: "employeeName",
+    //   fixed: "left"
+    // },
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      // fixed: "left"
+    },
+    {
+      title: "Check in Time",
+      dataIndex: "checkInTime",
+      key: "checkInTime",
+      render: (value) => value ? value : "-"
+    },
+    {
+      title: "Check Out Time",
+      dataIndex: "checkOutTime",
+      key: "checkOutTime",
+      render: (value) => value ? value : "-"
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (text) => (
+        <span
+          style={{
+            color:
+              text === "PRESENT"
+                ? "green"
+                : "red",
+            fontWeight: "bold"
+          }}
+        >
+          {text}
+        </span>
+      )
+    },
+
+
+  ]
   return (
     <>
       <div className="pagetitle">
@@ -162,50 +215,16 @@ function Attendance() {
               <div class="col-12 col-xxl-12 col-xl-12">
                 <div class="card top-selling overflow-auto">
 
-                  <div class="filter">
-                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                      <li class="dropdown-header text-start">
-                        <h6>Filter</h6>
-                      </li>
-
-                      <li><a class="dropdown-item" href="#">Today</a></li>
-                      <li><a class="dropdown-item" href="#">This Month</a></li>
-                      <li><a class="dropdown-item" href="#">This Year</a></li>
-                    </ul>
-                  </div>
-
 
                   <div class="card-body pb-0">
                     <h5 class="card-title">Employee Attendance</h5>
-                    <table class="table table-borderless">
-                      <thead>
-                        <tr>
-                          <th scope="col">S/N</th>
-                          <th scope="col">Date</th>
-                          <th scope="col">Check in Time</th>
-                          <th scope="col">Check Out Time</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">EmployeeId</th>
-                          {/* <th scope="col">Name</th> */}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {data.map((attend) => (
-                          <tr key={attend.id}>
-                            <td scope="row">{attend.id}</td>
-                            <td>{attend.date}</td>
-                            <td>{attend.checkInTime ? attend.checkInTime : "-"}</td>
-                            <td>{attend.checkOutTime ? attend.checkOutTime : "-"}</td>
-                            {/* <td className="fw-bold">{attend.status}</td> */}
-                            <td className="fw-bold">{renderStatus(attend.status)}</td>
-                            <td>{attend.employeeId}</td>
-                            {/* <td style={{textAlign:"center"}}>{attend.employeeId}</td> */}
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
 
+                    <Table
+                      columns={attendColumn}
+                      dataSource={data}
+                      loading={!data.length}
+                      scroll={{ x: 'max-content' }}
+                    />
                   </div>
 
                 </div>

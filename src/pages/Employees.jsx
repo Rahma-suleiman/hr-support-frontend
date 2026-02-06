@@ -1,4 +1,6 @@
-import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EyeOutlined, ManOutlined, WomanOutlined } from '@ant-design/icons';
+import { faMars, faUser, faUserTie, faVenus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Modal, Popconfirm, Space, Table } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
@@ -176,17 +178,28 @@ const Employees = () => {
     setSelectedEmp(record);
     setOpenEmpDetails(true)
   }
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8087/api/v2/hrsupport/employee/${id}/permanent`);
+      setEmpData(prev => prev.filter(item => item.id !== id));
+    } catch (error) {
+      console.error("Delete failed", error)
+    }
+  }
+
+
   const empColumn = [
     {
       title: "S/N",
-      dataIndex: "id",
+      key: "sn",
       fixed: "left",
-      key: "id"
+      render: (_, __, index) => index + 1
     },
     {
       title: "Name",
       key: "name",
       width: 200,
+      fixed: "left",
       fixed: "left",
       render: (_, record) => (
         record.firstName + " " + record.lastName
@@ -212,8 +225,24 @@ const Employees = () => {
     {
       title: "Gender",
       dataIndex: "gender",
-      key: "gender"
-    },
+      key: "gender",
+      render: (gender) => (
+        <span>
+          {gender === "Male" ? (
+            <FontAwesomeIcon icon={faUserTie} style={{ color: "blue", marginRight: 5 }} />
+          ) : (
+            <FontAwesomeIcon icon={faUser} style={{ color: "darkmagenta", marginRight: 5 }} />
+          )}
+          {gender} {/* optional text */}
+        </span>
+      )
+    }
+    ,
+    // {
+    //   title: "Gender",
+    //   dataIndex: "gender",
+    //   key: "gender"
+    // },
     {
       title: "Date of Birth",
       dataIndex: "dob",
@@ -282,9 +311,10 @@ const Employees = () => {
             Edit
           </Button>
           <Popconfirm
-            type="danger"
-            size="small"
-            onClick={() => handleDelete(record)}
+            title="Are you sure to delete?"
+            onConfirm={() => handleDelete(record.id)}
+            okText="Yes"
+            cancelText="No"
           >
             <Button danger icon={<DeleteOutlined />} />
           </Popconfirm>
@@ -420,9 +450,6 @@ const Employees = () => {
                 </div>
               </div>
 
-
-
-
             </div>
             <div className="row">
 
@@ -557,7 +584,7 @@ const Employees = () => {
                                     <div className="row ms-3">
                                       {/* <label className="col-sm-2 col-form-label">Submit Button</label> */}
                                       <div className="col-sm-10">
-                                        <button type="submit" className="btn btn-primary" style={{marginLeft:"128px"}}>
+                                        <button type="submit" className="btn btn-primary" style={{ marginLeft: "128px" }}>
                                           {isEditing ? "Update Employee" : "Submit Form"}
                                         </button>
                                       </div>
@@ -591,8 +618,61 @@ const Employees = () => {
                         dataSource={empData}
                         scroll={{ x: 'max-content' }}
                       />
-                      <Modal
+                      {/* <Modal
+                      
                         title="Employee Details"
+                        open={openEmpDetails}
+                        onCancel={() => setOpenEmpDetails(false)}
+                        footer={[
+                          <Button key="close" onClick={() => setOpenEmpDetails(false)}>
+                            Close
+                          </Button>
+                        ]}
+                      >
+                        {selectedEmp && (
+                          <div>
+                            <p><strong>Name:</strong> {selectedEmp.firstName} {selectedEmp.lastName}</p>
+                            <p><strong>Email:</strong> {selectedEmp.email}</p>
+                            <p><strong>Phone:</strong> {selectedEmp.phone}</p>
+                            <p><strong>Gender:</strong> {selectedEmp.gender}</p>
+                            <p><strong>Date of Birth:</strong> {selectedEmp.dob}</p>
+                            <p><strong>Hire Date:</strong> {selectedEmp.hireDate}</p>
+                            <p><strong>Position:</strong> {selectedEmp.position}</p>
+                            <p><strong>Salary:</strong> {selectedEmp.salary}</p>
+                            <p>
+                              <strong>Status:</strong>{" "}
+                              <span
+                                style={{
+                                  color:
+                                    selectedEmp.status === "ACTIVE"
+                                      ? "green"
+                                      : selectedEmp.status === "ON_LEAVE"
+                                        ? "orange"
+                                        : "red",
+                                  fontWeight: "bold"
+                                }}
+                              >
+                                {selectedEmp.status}
+                              </span>
+                            </p>
+                            <p><strong>Department:</strong> {getDeptName(selectedEmp.departmentId)}</p>
+                          </div>
+                        )}
+                      </Modal> */}
+
+                      <Modal
+                        title={
+                          selectedEmp && (
+                            <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                              {selectedEmp.gender === "Male" ? (
+                                <FontAwesomeIcon icon={faUserTie} style={{ color: "blue" }} />
+                              ) : (
+                                <FontAwesomeIcon icon={faUser} style={{ color: "darkmagenta" }} />
+                              )}
+                              {isEditing ? "Update Employee" : "Employee Details"}
+                            </span>
+                          )
+                        }
                         open={openEmpDetails}
                         onCancel={() => setOpenEmpDetails(false)}
                         footer={[
