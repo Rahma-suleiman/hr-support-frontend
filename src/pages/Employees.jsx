@@ -344,33 +344,20 @@ const Employees = () => {
             <div className="row">
               <div className="col-xxl-4 col-md-4 col-sm-6">
                 <div className="card info-card sales-card" style={{ background: "#e6a3f3ff" }}>
-                  {/* <div className="card info-card sales-card" style={{ background: "#f5aecaff" }}> */}
-
-                  <div className="filter">
-                    <Link className="icon" to="#" data-bs-toggle="dropdown"><i className="bi bi-three-dots"></i></Link>
-                    <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                      <li className="dropdown-header text-start">
-                        <h6>Filter</h6>
-                      </li>
-
-                      <li><Link className="dropdown-item" to="#">Today</Link></li>
-                      <li><Link className="dropdown-item" to="#">This Month</Link></li>
-                      <li><Link className="dropdown-item" to="#">This Year</Link></li>
-                    </ul>
-                  </div>
+             
 
                   <div className="card-body" >
                     <h5 className="card-title">Department Accountancy</h5>
-                    {/* <h5 className="card-title">Sales <span>| Today</span></h5> */}
 
                     <div className="d-flex align-items-center">
                       <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        {/* <i className="bi bi-cart"></i> */}
-                        <i className="fas fa-user-check"></i>
+                        {/* <i className="fas fa-user-check"></i> */}
+                        {/* <i className="fas fa-calculator"></i> */}
+                        <i className="fas fa-coins"></i>
+
                       </div>
                       <div className="ps-3">
                         <h6>{deptAccount}</h6>
-                        {/* <h6>Department</h6> */}
                       </div>
                     </div>
                   </div>
@@ -381,32 +368,18 @@ const Employees = () => {
               </div>
               <div className="col-xxl-4 col-md-4 col-sm-6">
                 <div className="card info-card revenue-card" style={{ background: "#f3f17fff" }}>
-                  {/* <div className="card info-card revenue-card" style={{ background: "#b6f7eaff" }}> */}
-                  <div className="filter">
-                    <Link className="icon" to="#" data-bs-toggle="dropdown"><i className="bi bi-three-dots"></i></Link>
-                    <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                      <li className="dropdown-header text-start">
-                        <h6>Filter</h6>
-                      </li>
-
-                      <li><Link className="dropdown-item" to="#">Today</Link></li>
-                      <li><Link className="dropdown-item" to="#">This Month</Link></li>
-                      <li><Link className="dropdown-item" to="#">This Year</Link></li>
-                    </ul>
-                  </div>
 
                   <div className="card-body">
                     <h5 className="card-title">Department IT</h5>
 
                     <div className="d-flex align-items-center">
                       <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i className="fas fa-user-times"></i>
-                        {/* <i className="bi bi-currency-dollar"></i> */}
+                        {/* <i className="fas fa-user-times"></i> */}
+                        <i className="fas fa-laptop-code"></i>
+
                       </div>
                       <div className="ps-3">
                         <h6>{deptIt}</h6>
-                        {/* <h6>Dept Id</h6> */}
-                        {/* <span className="text-success small pt-1 fw-bold">8%</span> <span className="text-muted small pt-2 ps-1">increase</span> */}
 
                       </div>
                     </div>
@@ -416,32 +389,17 @@ const Employees = () => {
               </div>
               <div className="col-xxl-4 col-md-4 col-sm-6">
                 <div className="card info-card revenue-card" style={{ background: "#c4f18fff" }}>
-                  {/* <div className="card info-card revenue-card" style={{ background: "#f8cfa3ff" }}> */}
-
-                  <div className="filter">
-                    <Link className="icon" to="#" data-bs-toggle="dropdown"><i className="bi bi-three-dots"></i></Link>
-                    <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                      <li className="dropdown-header text-start">
-                        <h6>Filter</h6>
-                      </li>
-
-                      {/* <li><Link className="dropdown-item" to="#">Today</Link></li> */}
-                      <li><Link className="dropdown-item" to="#">This Month</Link></li>
-                      <li><Link className="dropdown-item" to="#">This Year</Link></li>
-                    </ul>
-                  </div>
-
+ 
                   <div className="card-body">
                     <h5 className="card-title">Department HR</h5>
 
                     <div className="d-flex align-items-center">
                       <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i className="fas fa-user-clock"></i>
+                        {/* <i className="fas fa-user-clock"></i> */}
+                        <i className="fas fa-user-tie"></i>
                       </div>
                       <div className="ps-3">
                         <h6>{deptHr}</h6>
-                        {/* <h6>deptHr</h6> */}
-                        {/* <span className="text-success small pt-1 fw-bold">8%</span> <span className="text-muted small pt-2 ps-1">increase</span> */}
 
                       </div>
                     </div>
@@ -618,56 +576,15 @@ const Employees = () => {
                         dataSource={empData}
                         scroll={{ x: 'max-content' }}
                       />
-                      {/* <Modal
-                      
-                        title="Employee Details"
-                        open={openEmpDetails}
-                        onCancel={() => setOpenEmpDetails(false)}
-                        footer={[
-                          <Button key="close" onClick={() => setOpenEmpDetails(false)}>
-                            Close
-                          </Button>
-                        ]}
-                      >
-                        {selectedEmp && (
-                          <div>
-                            <p><strong>Name:</strong> {selectedEmp.firstName} {selectedEmp.lastName}</p>
-                            <p><strong>Email:</strong> {selectedEmp.email}</p>
-                            <p><strong>Phone:</strong> {selectedEmp.phone}</p>
-                            <p><strong>Gender:</strong> {selectedEmp.gender}</p>
-                            <p><strong>Date of Birth:</strong> {selectedEmp.dob}</p>
-                            <p><strong>Hire Date:</strong> {selectedEmp.hireDate}</p>
-                            <p><strong>Position:</strong> {selectedEmp.position}</p>
-                            <p><strong>Salary:</strong> {selectedEmp.salary}</p>
-                            <p>
-                              <strong>Status:</strong>{" "}
-                              <span
-                                style={{
-                                  color:
-                                    selectedEmp.status === "ACTIVE"
-                                      ? "green"
-                                      : selectedEmp.status === "ON_LEAVE"
-                                        ? "orange"
-                                        : "red",
-                                  fontWeight: "bold"
-                                }}
-                              >
-                                {selectedEmp.status}
-                              </span>
-                            </p>
-                            <p><strong>Department:</strong> {getDeptName(selectedEmp.departmentId)}</p>
-                          </div>
-                        )}
-                      </Modal> */}
-
                       <Modal
+                        // title="Employee Details"
                         title={
                           selectedEmp && (
                             <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                               {selectedEmp.gender === "Male" ? (
-                                <FontAwesomeIcon icon={faUserTie} style={{ color: "blue" }} />
+                                <FontAwesomeIcon icon={faUserTie} style={{ color: "blue", fontSize:"28px" }} />
                               ) : (
-                                <FontAwesomeIcon icon={faUser} style={{ color: "darkmagenta" }} />
+                                <FontAwesomeIcon icon={faUser} style={{ color: "darkmagenta", fontSize:"28px" }} />
                               )}
                               {isEditing ? "Update Employee" : "Employee Details"}
                             </span>

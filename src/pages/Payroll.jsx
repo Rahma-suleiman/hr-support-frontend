@@ -8,12 +8,80 @@ import Payslip from './Payslip';
 const Payroll = () => {
     const [payslipData, setPayslipData] = useState([])
 
-    useEffect(() => {
-        const FetchPayroll = async () => {
-            const res = await axios.get("http://localhost:8087/api/v1/payroll");
-            setPayslipData(res.data)
+    const [employeeId, setEmployeeId] = useState("");
+    const [payrollDate, setPayrollDate] = useState("");
+    const [housingAllowance, setHousingAllowance] = useState("");
+    const [transportAllowance, setTransportAllowance] = useState("");
+    const [paye, setPaye] = useState("");
+    const [nssf, setNssf] = useState("");
+    const [nhif, setNhif] = useState("");
+    const [loanDeduction, setLoanDeduction] = useState("");
+    const [payrollStatus, setPayrollStatus] = useState("DRAFT");
+
+    const [empData, setEmpData] = useState([])
+
+    //   const [payrollStatuses] = useState([
+    //     { label: "Active", value: "ACTIVE" },
+    //     { label: "On Leave", value: "ON_LEAVE" },
+    //     { label: "Resigned", value: "RESIGNED" },
+    //   ])
+    const fetchEmployee = async () => {
+        try {
+            const res = await axios.get("http://localhost:8087/api/v2/hrsupport/employee")
+            setEmpData(res.data)
+        } catch (error) {
+            console.error("Error fetching employees", error)
         }
+    }
+    const FetchPayroll = async () => {
+        const res = await axios.get("http://localhost:8087/api/v1/payroll");
+        setPayslipData(res.data)
+    }
+    const payrollData = {
+        employeeId: Number(employeeId),
+        payrollDate,
+        housingAllowance: Number(housingAllowance),
+        transportAllowance: Number(transportAllowance),
+        paye: Number(paye),
+        nssf: Number(nssf),
+        nhif: Number(nhif),
+        loanDeduction: Number(loanDeduction),
+        status: payrollStatus
+    };
+    const submitPayroll = async (e) => {
+        e.preventDefault();
+
+        try {
+            await axios.post(
+                "http://localhost:8087/api/v2/hrsupport/payroll",
+                payrollData
+            );
+
+            // reset form
+            setEmployeeId("");
+            setPayrollDate("");
+            setHousingAllowance("");
+            setTransportAllowance("");
+            setPaye("");
+            setNssf("");
+            setNhif("");
+            setLoanDeduction("");
+            setPayrollStatus("DRAFT");
+
+            // close modal
+            const modalEl = document.getElementById("payrollModal");
+            const modalInstance = window.bootstrap.Modal.getInstance(modalEl);
+            modalInstance.hide();
+
+        } catch (error) {
+            console.error("Error saving payroll", error);
+        }
+    };
+
+    useEffect(() => {
         FetchPayroll()
+        fetchEmployee()
+
     }, [])
 
 
@@ -169,6 +237,174 @@ const Payroll = () => {
                     <div className="col-lg-12 ">
 
                         <div className="card col-lg-12">
+                            <div className="card-header col-12 col-xxl-12 col-xl-12">
+                                <Button
+                                    type="primary"
+                                    style={{ marginBottom: "20px" }}
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#payrollModal"
+                                >
+                                    Add Payroll
+                                </Button>
+
+                                <div
+                                    className="modal fade"
+                                    id="payrollModal"
+                                    tabIndex="-1"
+                                    aria-hidden="true"
+                                >
+                                    <div className="modal-dialog modal-lg">
+                                        <div className="modal-content">
+
+                                            <div className="modal-header">
+                                                <h5 className="modal-title">
+                                                    <i className="fas fa-file-invoice-dollar me-2"></i>
+                                                    Create Payroll
+                                                </h5>
+                                                <button
+                                                    type="button"
+                                                    className="btn-close"
+                                                    data-bs-dismiss="modal"
+                                                ></button>
+                                            </div>
+
+                                            <div className="modal-body">
+                                                <form onSubmit={submitPayroll}>
+
+                                                    <div className="row mb-3">
+                                                        <label className="col-sm-3 col-form-label">Employee</label>
+                                                        <div className="col-sm-9">
+                                                            <select
+                                                                className="form-select"
+                                                                value={employeeId}
+                                                                onChange={(e) => setEmployeeId(e.target.value)}
+                                                                required
+                                                            >
+                                                                <option value="">-- Select Employee --</option>
+                                                                {empData.map(emp => (
+                                                                    <option key={emp.id} value={emp.id}>
+                                                                        {emp.firstName} {emp.lastName}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="row mb-3">
+                                                        <label className="col-sm-3 col-form-label">Payroll Date</label>
+                                                        <div className="col-sm-9">
+                                                            <input
+                                                                type="date"
+                                                                className="form-control"
+                                                                value={payrollDate}
+                                                                onChange={(e) => setPayrollDate(e.target.value)}
+                                                                required
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="row mb-3">
+                                                        <label className="col-sm-3 col-form-label">Housing Allowance</label>
+                                                        <div className="col-sm-9">
+                                                            <input
+                                                                type="number"
+                                                                className="form-control"
+                                                                value={housingAllowance}
+                                                                onChange={(e) => setHousingAllowance(e.target.value)}
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="row mb-3">
+                                                        <label className="col-sm-3 col-form-label">Transport Allowance</label>
+                                                        <div className="col-sm-9">
+                                                            <input
+                                                                type="number"
+                                                                className="form-control"
+                                                                value={transportAllowance}
+                                                                onChange={(e) => setTransportAllowance(e.target.value)}
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="row mb-3">
+                                                        <label className="col-sm-3 col-form-label">PAYE</label>
+                                                        <div className="col-sm-9">
+                                                            <input
+                                                                type="number"
+                                                                className="form-control"
+                                                                value={paye}
+                                                                onChange={(e) => setPaye(e.target.value)}
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="row mb-3">
+                                                        <label className="col-sm-3 col-form-label">NSSF</label>
+                                                        <div className="col-sm-9">
+                                                            <input
+                                                                type="number"
+                                                                className="form-control"
+                                                                value={nssf}
+                                                                onChange={(e) => setNssf(e.target.value)}
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="row mb-3">
+                                                        <label className="col-sm-3 col-form-label">NHIF</label>
+                                                        <div className="col-sm-9">
+                                                            <input
+                                                                type="number"
+                                                                className="form-control"
+                                                                value={nhif}
+                                                                onChange={(e) => setNhif(e.target.value)}
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="row mb-3">
+                                                        <label className="col-sm-3 col-form-label">Loan Deduction</label>
+                                                        <div className="col-sm-9">
+                                                            <input
+                                                                type="number"
+                                                                className="form-control"
+                                                                value={loanDeduction}
+                                                                onChange={(e) => setLoanDeduction(e.target.value)}
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="row mb-4">
+                                                        <label className="col-sm-3 col-form-label">Status</label>
+                                                        <div className="col-sm-9">
+                                                            <select
+                                                                className="form-select"
+                                                                value={payrollStatus}
+                                                                onChange={(e) => setPayrollStatus(e.target.value)}
+                                                            >
+                                                                <option value="DRAFT">Draft</option>
+                                                                <option value="APPROVED">Approved</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="text-center">
+                                                        <button type="submit" className="btn btn-primary">
+                                                            Submit Payroll
+                                                        </button>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
                             <div className="card-body">
                                 <h5 className="card-title">Payroll Table</h5>
 

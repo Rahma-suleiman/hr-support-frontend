@@ -110,20 +110,7 @@ function Attendance() {
           <div className="col-lg-12 col-md-12">
             <div className="row">
               <div className="col-xxl-4 col-md-4 col-sm-6">
-                <div className="card info-card sales-card">
-
-                  <div className="filter">
-                    <Link className="icon" to="#" data-bs-toggle="dropdown"><i className="bi bi-three-dots"></i></Link>
-                    <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                      <li className="dropdown-header text-start">
-                        <h6>Filter</h6>
-                      </li>
-
-                      <li><Link className="dropdown-item" to="#">Today</Link></li>
-                      <li><Link className="dropdown-item" to="#">This Month</Link></li>
-                      <li><Link className="dropdown-item" to="#">This Year</Link></li>
-                    </ul>
-                  </div>
+                <div className="card info-card revenue-card" style={{ background: "#b1f0f0ff" }}>
 
                   <div className="card-body">
                     <h5 className="card-title">Present Summary <span> | Today</span> </h5>
@@ -145,20 +132,8 @@ function Attendance() {
                 </div>
               </div>
               <div className="col-xxl-4 col-md-4 col-sm-6">
-                <div className="card info-card revenue-card">
-
-                  <div className="filter">
-                    <Link className="icon" to="#" data-bs-toggle="dropdown"><i className="bi bi-three-dots"></i></Link>
-                    <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                      <li className="dropdown-header text-start">
-                        <h6>Filter</h6>
-                      </li>
-
-                      <li><Link className="dropdown-item" to="#">Today</Link></li>
-                      <li><Link className="dropdown-item" to="#">This Month</Link></li>
-                      <li><Link className="dropdown-item" to="#">This Year</Link></li>
-                    </ul>
-                  </div>
+                {/* <div className="card info-card revenue-card"> */}
+                <div className="card info-card revenue-card" style={{ background: "#f0bdb1ff" }}>
 
                   <div className="card-body">
                     <h5 className="card-title">Absent Summary <span> | Today</span> </h5>
@@ -179,20 +154,8 @@ function Attendance() {
                 </div>
               </div>
               <div className="col-xxl-4 col-md-4 col-sm-6">
-                <div className="card info-card revenue-card">
-
-                  <div className="filter">
-                    <Link className="icon" to="#" data-bs-toggle="dropdown"><i className="bi bi-three-dots"></i></Link>
-                    <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                      <li className="dropdown-header text-start">
-                        <h6>Filter</h6>
-                      </li>
-
-                      {/* <li><Link className="dropdown-item" to="#">Today</Link></li> */}
-                      <li><Link className="dropdown-item" to="#">This Month</Link></li>
-                      <li><Link className="dropdown-item" to="#">This Year</Link></li>
-                    </ul>
-                  </div>
+                {/* <div className="card info-card revenue-card"> */}
+                <div className="card info-card revenue-card" style={{ background: "#f0b1bbff" }}>
 
                   <div className="card-body">
                     <h5 className="card-title">Total Attendance<span> | Today</span> </h5>

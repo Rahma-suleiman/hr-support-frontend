@@ -83,6 +83,7 @@ const LeaveRequest = () => {
     {
       title: "Emp Name",
       dataIndex: "empName",
+      fixed:"left",
       key: "empName"
     },
     {
@@ -126,6 +127,7 @@ const LeaveRequest = () => {
     {
       title: "Actions",
       key: "actions",
+      fixed:"right",
       render: (_, record) =>
         record.status === "PENDING" ? (
           <span>
@@ -175,11 +177,6 @@ const LeaveRequest = () => {
                   <div class="card-body pb-0">
                     <h5 class="card-title">Employee Leaves Request</h5>
 
-                    {/* <Table
-                      columns={tableColumn}
-                      dataSource={leaveData}
-                      scroll={{ x: 'max-content' }} 
-                    /> */}
                     <Table
                       columns={tableColumn}
                       dataSource={leaveData}
