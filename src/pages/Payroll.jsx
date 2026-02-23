@@ -141,7 +141,7 @@ const Payroll = () => {
             console.error("Delete failed", error);
         }
     };
-   
+
     // This means the backend expects a string, Just a plain enum value as JSON
     const handleAction = async (payrollId, newStatus) => {
         try {
@@ -338,7 +338,8 @@ const Payroll = () => {
                                             <div className="modal-header">
                                                 <h5 className="modal-title">
                                                     <i className="fas fa-file-invoice-dollar me-2"></i>
-                                                    Create Payroll
+                                                    {/* Create Payroll */}
+                                                    {isEditing ? "Update Payroll" : "Add Payroll"}
                                                 </h5>
                                                 <button
                                                     type="button"
@@ -470,7 +471,8 @@ const Payroll = () => {
 
                                                     <div className="text-center">
                                                         <button type="submit" className="btn btn-primary">
-                                                            Submit Payroll
+                                                            {/* Submit Payroll */}
+                                                            {isEditing ? "Submit Updated Payroll" : "Submit New Payroll"}
                                                         </button>
                                                     </div>
 

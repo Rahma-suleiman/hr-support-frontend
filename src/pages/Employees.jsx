@@ -88,7 +88,7 @@ const Employees = () => {
         // It loops through the employees array and replaces only the employee 
         // being edited with the updated data from the server, 
         // while keeping all other employees unchanged.
-        setEmpData(prev=>
+        setEmpData(prev =>
           prev.map(emp =>
             emp.id === editingEmpId ? res.data : emp
           )
@@ -337,7 +337,7 @@ const Employees = () => {
             <div className="row">
               <div className="col-xxl-4 col-md-4 col-sm-6">
                 <div className="card info-card sales-card" style={{ background: "#e6a3f3ff" }}>
-             
+
 
                   <div className="card-body" >
                     <h5 className="card-title">Department Accountancy</h5>
@@ -382,7 +382,7 @@ const Employees = () => {
               </div>
               <div className="col-xxl-4 col-md-4 col-sm-6">
                 <div className="card info-card revenue-card" style={{ background: "#c4f18fff" }}>
- 
+
                   <div className="card-body">
                     <h5 className="card-title">Department HR</h5>
 
@@ -575,9 +575,9 @@ const Employees = () => {
                           selectedEmp && (
                             <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                               {selectedEmp.gender === "Male" ? (
-                                <FontAwesomeIcon icon={faUserTie} style={{ color: "blue", fontSize:"28px" }} />
+                                <FontAwesomeIcon icon={faUserTie} style={{ color: "blue", fontSize: "28px" }} />
                               ) : (
-                                <FontAwesomeIcon icon={faUser} style={{ color: "darkmagenta", fontSize:"28px" }} />
+                                <FontAwesomeIcon icon={faUser} style={{ color: "darkmagenta", fontSize: "28px" }} />
                               )}
                               {isEditing ? "Update Employee" : "Employee Details"}
                             </span>
