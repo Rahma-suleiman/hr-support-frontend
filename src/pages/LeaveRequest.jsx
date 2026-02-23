@@ -53,26 +53,7 @@ const LeaveRequest = () => {
       alert("Failed to update leave status");
     }
   };
-  // This means the backend expects a string, Just a plain enum value as JSON
-  // const handleAction = async (leaveId, status) => {
-  //   try {
-  //     await axios.put(
-  //       `http://localhost:8087/api/v2/hrsupport/leave/${leaveId}/status`,
-  //       null, // 👈 no body
-  //       {
-  //         params: { status } // 👈 sent as request param
-  //       }
-  //     );
-
-  //     // Refresh table
-  //     getLeaveRequests();
-
-  //   } catch (error) {
-  //     console.error("Failed to update leave status", error);
-  //     alert("Failed to update leave status");
-  //   }
-  // };
-
+ 
   const tableColumn = [
     {
       title: "S/N",

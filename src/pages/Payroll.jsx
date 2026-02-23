@@ -141,8 +141,30 @@ const Payroll = () => {
             console.error("Delete failed", error);
         }
     };
+   
+    // This means the backend expects a string, Just a plain enum value as JSON
+    const handleAction = async (payrollId, newStatus) => {
+        try {
+            const res = await axios.put(
+                `http://localhost:8087/api/v2/hrsupport/payroll/${payrollId}/payrollStatus`,
+                null,
+                {
+                    params: { newStatus } // must match @RequestParam("newStatus")
+                }
+            );
 
+            // update only changed row (keep position)
+            setPayslipData(prev =>
+                prev.map(item =>
+                    item.id === payrollId ? res.data : item
+                )
+            );
 
+        } catch (error) {
+            console.error("Failed to update payroll status", error);
+            alert("Failed to update payroll status");
+        }
+    };
     const payrollColumn = [
         {
             title: "S/N",
@@ -215,6 +237,31 @@ const Payroll = () => {
             title: "Status",
             dataIndex: "status",
             key: "status"
+        },
+        {
+            title: "Approve Status",
+            key: "approve",
+            fixed: "right",
+            render: (_, record) =>
+                record.status === "DRAFT" ? (
+                    <span>
+                        <Popconfirm
+                            title="Approve this payroll?"
+                            onConfirm={() => handleAction(record.id, "APPROVED")}
+                        >
+                            <button className="btn btn-success btn-sm me-1">Approve</button>
+                        </Popconfirm>
+
+                        <Popconfirm
+                            title="Mark as processed?"
+                            onConfirm={() => handleAction(record.id, "PROCESSED")}
+                        >
+                            <button className="btn btn-danger btn-sm">Process</button>
+                        </Popconfirm>
+                    </span>
+                ) : (
+                    <span>N/A</span>
+                ),
         },
         {
             title: "Action",
