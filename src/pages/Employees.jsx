@@ -58,7 +58,6 @@ const Employees = () => {
   const handleEdit = (record) => {
     setIsEditing(true);
     setEditingEmpId(record.id);
-
     setFirstName(record.firstName);
     setLastName(record.lastName);
     setEmail(record.email);
@@ -89,8 +88,8 @@ const Employees = () => {
         // It loops through the employees array and replaces only the employee 
         // being edited with the updated data from the server, 
         // while keeping all other employees unchanged.
-        setEmpData(
-          empData.map(emp =>
+        setEmpData(prev=>
+          prev.map(emp =>
             emp.id === editingEmpId ? res.data : emp
           )
         )
@@ -120,6 +119,7 @@ const Employees = () => {
       const modalEl = document.getElementById("largeModal");
       const modalInstance = window.bootstrap.Modal.getInstance(modalEl);
       modalInstance.hide();
+
     } catch (error) {
       console.log("Error saving employee", error)
     }
@@ -200,7 +200,6 @@ const Employees = () => {
       key: "name",
       width: 200,
       fixed: "left",
-      fixed: "left",
       render: (_, record) => (
         record.firstName + " " + record.lastName
       )
@@ -236,13 +235,7 @@ const Employees = () => {
           {gender} {/* optional text */}
         </span>
       )
-    }
-    ,
-    // {
-    //   title: "Gender",
-    //   dataIndex: "gender",
-    //   key: "gender"
-    // },
+    },
     {
       title: "Date of Birth",
       dataIndex: "dob",

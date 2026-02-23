@@ -20,11 +20,10 @@ const Payroll = () => {
 
     const [empData, setEmpData] = useState([])
 
-    //   const [payrollStatuses] = useState([
-    //     { label: "Active", value: "ACTIVE" },
-    //     { label: "On Leave", value: "ON_LEAVE" },
-    //     { label: "Resigned", value: "RESIGNED" },
-    //   ])
+    const [isEditing, setIsEditing] = useState(false);
+    const [editingPayrollId, setEditingPayrollId] = useState(null);
+
+
     const fetchEmployee = async () => {
         try {
             const res = await axios.get("http://localhost:8087/api/v2/hrsupport/employee")
@@ -34,7 +33,7 @@ const Payroll = () => {
         }
     }
     const FetchPayroll = async () => {
-        const res = await axios.get("http://localhost:8087/api/v1/payroll");
+        const res = await axios.get("http://localhost:8087/api/v2/hrsupport/payroll");
         setPayslipData(res.data)
     }
     const payrollData = {
@@ -52,11 +51,29 @@ const Payroll = () => {
         e.preventDefault();
 
         try {
-            await axios.post(
-                "http://localhost:8087/api/v2/hrsupport/payroll",
-                payrollData
-            );
+            if (isEditing) {
+                //UPDATE
+                const res = await axios.put(
+                    `http://localhost:8087/api/v2/hrsupport/payroll/${editingPayrollId}`,
+                    payrollData
+                );
 
+                //  replace only updated row, keep position
+                setPayslipData(prev =>
+                    prev.map(item =>
+                        item.id === editingPayrollId ? res.data : item
+                    )
+                );
+            } else {
+                //CREATE NEW
+                const res = await axios.post(
+                    "http://localhost:8087/api/v2/hrsupport/payroll",
+                    payrollData
+                );
+                setPayslipData([...payslipData, res.data])
+            }
+
+            setIsEditing(false)
             // reset form
             setEmployeeId("");
             setPayrollDate("");
@@ -95,15 +112,30 @@ const Payroll = () => {
     };
 
 
-
     const handleEdit = (record) => {
-        console.log("Editing payroll:", record);
-        // open edit modal OR set edit state
+        setIsEditing(true);
+        setEditingPayrollId(record.id);
+
+        setEmployeeId(record.employeeId);
+        setPayrollDate(record.payrollDate);
+        setHousingAllowance(record.housingAllowance);
+        setTransportAllowance(record.transportAllowance);
+        setPaye(record.paye);
+        setNssf(record.nssf);
+        setNhif(record.nhif);
+        setLoanDeduction(record.loanDeduction);
+        setPayrollStatus(record.status);
+
+        // open modal
+        const modal = new window.bootstrap.Modal(
+            document.getElementById("payrollModal")
+        );
+        modal.show();
     };
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:8087/api/v1/payroll/${id}`);
+            await axios.delete(`http://localhost:8087/api/v2/hrsupport/payroll/${id}`);
             setPayslipData(prev => prev.filter(item => item.id !== id));
         } catch (error) {
             console.error("Delete failed", error);
