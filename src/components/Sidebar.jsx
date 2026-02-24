@@ -30,7 +30,8 @@ const Sidebar = () => {
 
         <li className="nav-item">
           <Link className="nav-link collapsed" to="leave">
-            <i className="fas fa-plane-departure" style={{marginRight:"3px",fontSize:"18px"}}></i>
+            {/* <i className="fas fa-plane-departure" style={{marginRight:"3px",fontSize:"18px"}}></i> */}
+            <i className="fas fa-user-clock" style={{marginRight:"3px",fontSize:"18px"}}></i>
 
             <span>Leave Request</span>
           </Link>

@@ -23,15 +23,18 @@ const Header = () => {
             window.removeEventListener('load', headerScrolled);
         };
     }, []);
-    const logOut=()=>{
 
-    }
     return (
         <header id="header" className="header fixed-top d-flex align-items-center">
 
             <div className="d-flex align-items-center justify-content-between">
                 <Link to="/" className="logo d-flex align-items-center">
-                    <img src="/img/logo.png" alt="" />
+                    {/* <img
+                        src="/img/hrLogo.png"
+                        style={{ width: "120px", height: "120px" }}
+                        // style={{ width: "220px", height: "220px",objectFit: "contain" }}
+                        alt="HR Logo"
+                    /> */}
                     <span className="d-none d-lg-block">HR SUPPORT</span>
                 </Link>
                 <i className="bi bi-list toggle-sidebar-btn" onClick={toggleSidebar}></i>
@@ -45,7 +48,7 @@ const Header = () => {
                             <i className="bi bi-search" />
                         </a>
                     </li>
- 
+
                 </ul>
             </nav>
 
