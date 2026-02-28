@@ -1,4 +1,4 @@
-// import axios from 'axios';
+// import axios from '../api/axios';
 // import React, { useEffect, useState } from 'react';
 import axios from 'axios'
 import { useEffect, useState } from 'react'
@@ -16,7 +16,7 @@ const Dashboard = () => {
 
   const fetchEmployee = async () => {
     try {
-      const res = await axios.get("http://localhost:8087/api/v2/hrsupport/employee")
+      const res = await axios.get("/employee")
       const resData = res.data
       setEmpCount(resData.length)
        //on leave count
@@ -29,7 +29,7 @@ const Dashboard = () => {
 
   const fetchDepartment = async () => {
     try {
-      const res = await axios.get("http://localhost:8087/api/v2/hrsupport/department")
+      const res = await axios.get("/department")
       const resData = res.data
       setDeptCount(resData.length)
      
@@ -39,7 +39,7 @@ const Dashboard = () => {
 
   }
   const getLeaveRequests = async () => {
-    const res = await axios.get("http://localhost:8087/api/v2/hrsupport/leave")
+    const res = await axios.get("/leave")
     const resData = res.data
     // setLeaveCount(resData)
     //on leave count

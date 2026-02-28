@@ -1,6 +1,6 @@
 // import { Link } from 'react-router-dom'
 import { Table } from 'antd';
-import axios from 'axios';
+import axios from '../api/axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 
@@ -13,7 +13,7 @@ function Attendance() {
 
   useEffect(() => {
     const handleAttendance = async () => {
-      const res = await axios.get("http://localhost:8087/api/v2/hrsupport/attendance")
+      const res = await axios.get("/attendance")
       const resData = res.data;
       setData(resData);
       // present count

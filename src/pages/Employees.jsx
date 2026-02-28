@@ -2,7 +2,7 @@ import { DeleteOutlined, EyeOutlined, ManOutlined, WomanOutlined } from '@ant-de
 import { faMars, faUser, faUserTie, faVenus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Modal, Popconfirm, Space, Table } from 'antd';
-import axios from 'axios';
+import axios from '../api/axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -84,7 +84,7 @@ const Employees = () => {
     try {
       if (isEditing) {
         //UPDATE
-        const res = await axios.put(`http://localhost:8087/api/v2/hrsupport/employee/${editingEmpId}`, formData)
+        const res = await axios.put(`/employee/${editingEmpId}`, formData)
         // It loops through the employees array and replaces only the employee 
         // being edited with the updated data from the server, 
         // while keeping all other employees unchanged.
@@ -96,7 +96,7 @@ const Employees = () => {
 
       } else {
         //CREATE
-        const res = await axios.post("http://localhost:8087/api/v2/hrsupport/employee", formData)
+        const res = await axios.post("/employee", formData)
         setEmpData([...empData, res.data])
       }
       setIsEditing(false)
@@ -129,7 +129,7 @@ const Employees = () => {
 
   const fetchDepartment = async () => {
     try {
-      const res = await axios.get("http://localhost:8087/api/v2/hrsupport/department")
+      const res = await axios.get("/department")
       setDeptData(res.data)
     } catch (error) {
       console.error("Error fetching employees", error)
@@ -139,7 +139,7 @@ const Employees = () => {
 
   const fetchEmployee = async () => {
     try {
-      const res = await axios.get("http://localhost:8087/api/v2/hrsupport/employee")
+      const res = await axios.get("/employee")
       setEmpData(res.data)
     } catch (error) {
       console.error("Error fetching employees", error)
@@ -180,7 +180,7 @@ const Employees = () => {
   }
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8087/api/v2/hrsupport/employee/${id}/permanent`);
+      await axios.delete(`/employee/${id}/permanent`);
       setEmpData(prev => prev.filter(item => item.id !== id));
     } catch (error) {
       console.error("Delete failed", error)

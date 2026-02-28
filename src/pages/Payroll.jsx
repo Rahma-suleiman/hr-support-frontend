@@ -26,14 +26,14 @@ const Payroll = () => {
 
     const fetchEmployee = async () => {
         try {
-            const res = await axios.get("http://localhost:8087/api/v2/hrsupport/employee")
+            const res = await axios.get("/employee")
             setEmpData(res.data)
         } catch (error) {
             console.error("Error fetching employees", error)
         }
     }
     const FetchPayroll = async () => {
-        const res = await axios.get("http://localhost:8087/api/v2/hrsupport/payroll");
+        const res = await axios.get("/payroll");
         setPayslipData(res.data)
     }
     const payrollData = {
@@ -54,7 +54,7 @@ const Payroll = () => {
             if (isEditing) {
                 //UPDATE
                 const res = await axios.put(
-                    `http://localhost:8087/api/v2/hrsupport/payroll/${editingPayrollId}`,
+                    `/payroll/${editingPayrollId}`,
                     payrollData
                 );
 
@@ -67,7 +67,7 @@ const Payroll = () => {
             } else {
                 //CREATE NEW
                 const res = await axios.post(
-                    "http://localhost:8087/api/v2/hrsupport/payroll",
+                    "/payroll",
                     payrollData
                 );
                 setPayslipData([...payslipData, res.data])
@@ -135,7 +135,7 @@ const Payroll = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:8087/api/v2/hrsupport/payroll/${id}`);
+            await axios.delete(`/payroll/${id}`);
             setPayslipData(prev => prev.filter(item => item.id !== id));
         } catch (error) {
             console.error("Delete failed", error);
@@ -146,7 +146,7 @@ const Payroll = () => {
     const handleAction = async (payrollId, newStatus) => {
         try {
             const res = await axios.put(
-                `http://localhost:8087/api/v2/hrsupport/payroll/${payrollId}/payrollStatus`,
+                `/payroll/${payrollId}/payrollStatus`,
                 null,
                 {
                     params: { newStatus } // must match @RequestParam("newStatus")

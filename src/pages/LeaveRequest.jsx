@@ -1,5 +1,5 @@
 import { Popconfirm, Table } from "antd";
-import axios from "axios";
+import axios from '../api/axios';
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -7,7 +7,7 @@ const LeaveRequest = () => {
   const [leaveData, setLeaveData] = useState([])
 
   const getLeaveRequests = async () => {
-    const res = await axios.get("http://localhost:8087/api/v2/hrsupport/leave")
+    const res = await axios.get("/leave")
     setLeaveData(res.data)
     console.log(leaveData)
   }
@@ -21,7 +21,7 @@ const LeaveRequest = () => {
   const handleAction = async (leaveId, status) => {
     try {
       await axios.put(
-        `http://localhost:8087/api/v2/hrsupport/leave/${leaveId}/status`,
+        `/leave/${leaveId}/status`,
 
         /*
           We are sending ONLY a string value (example: "APPROVED").
