@@ -1,6 +1,6 @@
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Modal, Popconfirm, Space, Table } from 'antd';
-import axios from 'axios';
+import axios from '../api/axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Payslip from './Payslip';
@@ -27,14 +27,14 @@ const Payroll = () => {
     const fetchEmployee = async () => {
         try {
             const res = await axios.get("/employee")
-            setEmpData(res.data)
+            setEmpData(Array.isArray(res.data) ? res.data : [])
         } catch (error) {
             console.error("Error fetching employees", error)
         }
     }
     const FetchPayroll = async () => {
         const res = await axios.get("/payroll");
-        setPayslipData(res.data)
+        setPayslipData(Array.isArray(res.data) ? res.data : [])
     }
     const payrollData = {
         employeeId: Number(employeeId),

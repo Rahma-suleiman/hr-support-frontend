@@ -1,19 +1,49 @@
-import { Popconfirm, Table } from "antd";
+import { Popconfirm, Table, Modal, Form, DatePicker, Select, Input, Button, message } from "antd";
 import axios from '../api/axios';
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const LeaveRequest = () => {
   const [leaveData, setLeaveData] = useState([])
+  const [employees, setEmployees] = useState([])
+  const [modalOpen, setModalOpen] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [form] = Form.useForm()
 
   const getLeaveRequests = async () => {
     const res = await axios.get("/leave")
-    setLeaveData(res.data)
-    console.log(leaveData)
+    setLeaveData(Array.isArray(res.data) ? res.data : [])
   }
+
   useEffect(() => {
     getLeaveRequests()
+    axios.get("/employee").then(res => {
+      setEmployees(Array.isArray(res.data) ? res.data : [])
+    })
   }, [])
+
+  const handleAddLeave = async (values) => {
+    setSubmitting(true)
+    try {
+      const payload = {
+        leaveType: values.leaveType,
+        startDate: values.startDate.format("YYYY-MM-DD"),
+        endDate: values.endDate.format("YYYY-MM-DD"),
+        reason: values.reason,
+        employeeId: values.employeeId,
+      }
+      await axios.post("/leave", payload)
+      message.success("Leave request submitted successfully")
+      form.resetFields()
+      setModalOpen(false)
+      getLeaveRequests()
+    } catch (err) {
+      message.error("Failed to submit leave request")
+      console.error(err)
+    } finally {
+      setSubmitting(false)
+    }
+  }
  
 
 
@@ -150,35 +180,108 @@ const LeaveRequest = () => {
           <div className="col-lg-12 col-md-12">
             <div className="row">
 
-              <div class="col-12 col-xxl-12 col-xl-12">
-                <div class="card top-selling overflow-auto">
-
-
-
-                  <div class="card-body pb-0">
-                    <h5 class="card-title">Employee Leaves Request</h5>
+              <div className="col-12 col-xxl-12 col-xl-12">
+                <div className="card top-selling overflow-auto">
+                  <div className="card-body pb-0">
+                    <div className="d-flex justify-content-between align-items-center mb-2">
+                      <h5 className="card-title mb-0">Employee Leaves Request</h5>
+                      <Button type="primary" onClick={() => setModalOpen(true)}>
+                        + Add Leave Request
+                      </Button>
+                    </div>
 
                     <Table
                       columns={tableColumn}
                       dataSource={leaveData}
                       scroll={{ x: "max-content" }}
                       loading={!leaveData.length}
+                      rowKey="id"
                     />
-
-
                   </div>
-
                 </div>
               </div>
 
-
             </div>
           </div>
-
-
-
         </div>
       </section>
+
+      <Modal
+        title="Add Leave Request"
+        open={modalOpen}
+        onCancel={() => { setModalOpen(false); form.resetFields(); }}
+        footer={null}
+        destroyOnClose
+      >
+        <Form form={form} layout="vertical" onFinish={handleAddLeave}>
+          <Form.Item
+            label="Employee"
+            name="employeeId"
+            rules={[{ required: true, message: "Please select an employee" }]}
+          >
+            <Select
+              showSearch
+              placeholder="Select employee"
+              optionFilterProp="label"
+              options={employees.map(e => ({
+                value: e.id,
+                label: `${e.firstName} ${e.lastName} (${e.empNo ?? e.id})`
+              }))}
+            />
+          </Form.Item>
+
+          <Form.Item
+            label="Leave Type"
+            name="leaveType"
+            rules={[{ required: true, message: "Please select a leave type" }]}
+          >
+            <Select
+              placeholder="Select leave type"
+              options={[
+                { value: "SICK", label: "Sick Leave" },
+                { value: "VACATION", label: "Vacation" },
+                { value: "MATERNITY", label: "Maternity Leave" },
+                { value: "PATERNITY", label: "Paternity Leave" },
+                { value: "STUDY", label: "Study Leave" },
+                { value: "COMPASSIONATE", label: "Compassionate Leave" },
+              ]}
+            />
+          </Form.Item>
+
+          <Form.Item
+            label="Start Date"
+            name="startDate"
+            rules={[{ required: true, message: "Please select start date" }]}
+          >
+            <DatePicker style={{ width: "100%" }} />
+          </Form.Item>
+
+          <Form.Item
+            label="End Date"
+            name="endDate"
+            rules={[{ required: true, message: "Please select end date" }]}
+          >
+            <DatePicker style={{ width: "100%" }} />
+          </Form.Item>
+
+          <Form.Item
+            label="Reason"
+            name="reason"
+            rules={[{ required: true, message: "Please enter a reason" }]}
+          >
+            <Input.TextArea rows={3} placeholder="Enter reason for leave" />
+          </Form.Item>
+
+          <Form.Item className="mt-3 mb-0 text-end">
+            <Button onClick={() => { setModalOpen(false); form.resetFields(); }} className="me-2">
+              Cancel
+            </Button>
+            <Button type="primary" htmlType="submit" loading={submitting}>
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
     </>
   );
 };

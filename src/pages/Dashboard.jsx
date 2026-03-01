@@ -1,6 +1,4 @@
-// import axios from '../api/axios';
-// import React, { useEffect, useState } from 'react';
-import axios from 'axios'
+import axios from '../api/axios';
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -17,7 +15,7 @@ const Dashboard = () => {
   const fetchEmployee = async () => {
     try {
       const res = await axios.get("/employee")
-      const resData = res.data
+      const resData = Array.isArray(res.data) ? res.data : []
       setEmpCount(resData.length)
        //on leave count
       const onLeave = resData.filter(leave => leave.status == "ON_LEAVE")
@@ -30,7 +28,7 @@ const Dashboard = () => {
   const fetchDepartment = async () => {
     try {
       const res = await axios.get("/department")
-      const resData = res.data
+      const resData = Array.isArray(res.data) ? res.data : []
       setDeptCount(resData.length)
      
     } catch (error) {
@@ -40,7 +38,7 @@ const Dashboard = () => {
   }
   const getLeaveRequests = async () => {
     const res = await axios.get("/leave")
-    const resData = res.data
+    const resData = Array.isArray(res.data) ? res.data : []
     // setLeaveCount(resData)
     //on leave count
     const pending = resData.filter(leave => leave.status == "PENDING")

@@ -130,7 +130,7 @@ const Employees = () => {
   const fetchDepartment = async () => {
     try {
       const res = await axios.get("/department")
-      setDeptData(res.data)
+      setDeptData(Array.isArray(res.data) ? res.data : [])
     } catch (error) {
       console.error("Error fetching employees", error)
     }
@@ -140,7 +140,7 @@ const Employees = () => {
   const fetchEmployee = async () => {
     try {
       const res = await axios.get("/employee")
-      setEmpData(res.data)
+      setEmpData(Array.isArray(res.data) ? res.data : [])
     } catch (error) {
       console.error("Error fetching employees", error)
     }
