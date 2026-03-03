@@ -71,7 +71,7 @@ const Dashboard = () => {
                 <div className="card info-card sales-card" style={{ background: "#f5aecaff" }}>
 
                   <div className="card-body" >
-                    <h5 className="card-title">Total Employee </h5>
+                    <h5 className="card-title">Total Employees </h5>
                     <div className="d-flex align-items-center">
                       <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
                         <i className="fas fa-users"></i>
@@ -91,7 +91,7 @@ const Dashboard = () => {
                 <div className="card info-card revenue-card" style={{ background: "#b6f7eaff" }}>
 
                   <div className="card-body">
-                    <h5 className="card-title">Total Department</h5>
+                    <h5 className="card-title">Total Departments</h5>
 
                     <div className="d-flex align-items-center">
                       <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
